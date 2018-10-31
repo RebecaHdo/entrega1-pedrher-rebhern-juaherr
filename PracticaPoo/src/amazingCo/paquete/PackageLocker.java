@@ -1,6 +1,6 @@
 package amazingCo.paquete;
 
-import GPSCoordinate;
+import es.uva.inf.poo.maps.GPSCoordinate;
 /**
  * 
  * @author juaherr
@@ -12,7 +12,7 @@ import GPSCoordinate;
  */
 public class PackageLocker {
 	
-	public PackageLocker(String id,GPSCoordinate ubicacion, ) {
+	public PackageLocker(String id,GPSCoordinate ubicacion ) {
 		
 	}
 	/**

@@ -1,7 +1,7 @@
 package amazingCo.paquete;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.GregorianCalendar; //ToDo Cambiar a java.time
 /**
  * 
  * @author juaherr

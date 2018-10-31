@@ -3,8 +3,7 @@ package amazingCo.paquete;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.time.LocalDate;
 public class PackageTest {
 	
 
@@ -13,18 +12,16 @@ public class PackageTest {
 		Package p = new Package("0000000000");
 		assertNotNull(p);
 		assertEquals("0000000000",p.getId());
-		GregorianCalendar c = new GregorianCalendar();
-		c.add(Calendar.DAY_OF_MONTH, 7);
-		assertEquals(c,p.getFecha());
+		LocalDate fecha = LocalDate.now().plusDays(7);
+		assertEquals(fecha,p.getFecha());
 	}
 	@Test
 	public void testPackageDiezDigitos9() {
 		Package p = new Package("9999999991");
 		assertNotNull(p);
 		assertEquals("9999999991",p.getId());
-		GregorianCalendar c = new GregorianCalendar();
-		c.add(Calendar.DAY_OF_MONTH, 7);
-		assertEquals(c,p.getFecha());
+		LocalDate fecha = LocalDate.now().plusDays(7);
+		assertEquals(fecha,p.getFecha());
 	}
 	@Test( expected = IllegalArgumentException.class)
 	public void testPackageNueveDigitos() {
@@ -85,9 +82,8 @@ public class PackageTest {
 	public void testGetFecha() {
 		Package p = new Package("0000000000");
 		assertNotNull(p);
-		GregorianCalendar c = new GregorianCalendar();
-		c.add(Calendar.DAY_OF_MONTH, 7);
-		assertEquals(c,p.getFecha());
+		LocalDate fecha = LocalDate.now().plusDays(7);
+		assertEquals(fecha,p.getFecha());
 	}
 
 	@Test
@@ -100,8 +96,7 @@ public class PackageTest {
 	@Test
 	public void testFechaPasadaNoPasada() {
 		Package p = new Package("0000000000");
-		GregorianCalendar fecha = new GregorianCalendar();
-		fecha.add(Calendar.DAY_OF_MONTH, 7);
+		LocalDate fecha = LocalDate.now().plusDays(7);
 		assertFalse(p.fechaPasada(fecha));
 		
 	}
@@ -109,16 +104,15 @@ public class PackageTest {
 	@Test
 	public void testFechaPasadaPasada() {
 		Package p = new Package("0000000000");
-		GregorianCalendar fecha = new GregorianCalendar();
-		fecha.add(Calendar.DAY_OF_MONTH, 8);
-		assertTrue(p.fechaPasada(fecha));
+		LocalDate fecha = LocalDate.now().plusDays(6);
+		assertTrue(p.getFecha()+ "<"+ fecha,p.fechaPasada(fecha));
 		
 	}
 	
 	@Test (expected = NullPointerException.class) 
 	public void testFechaPasadaNull() {
 		Package p = new Package("0000000000");
-		GregorianCalendar fecha = null;
+		LocalDate fecha = null;
 		assertTrue(p.fechaPasada(fecha));
 		
 	}

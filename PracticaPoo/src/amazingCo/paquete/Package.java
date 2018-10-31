@@ -1,7 +1,7 @@
 package amazingCo.paquete;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar; //ToDo Cambiar a java.time
+import java.time.LocalDate;
+
 /**
  * 
  * @author juaherr
@@ -16,7 +16,7 @@ public class Package {
 	private static final int  DIAS_MAXIMO = 7;
 
 	private String id;
-	private GregorianCalendar fechaLimite;
+	private LocalDate fechaLimite;
 	/*
 	 * Estados:
 	 * 	0 para recoger.
@@ -29,7 +29,7 @@ public class Package {
 	 * Devuelve la fecha límite del paquete.
 	 * @return fecha límite del paquete.
 	 */
-	public GregorianCalendar getFecha() {
+	public LocalDate getFecha() {
 		return fechaLimite;
 	}
 	
@@ -73,8 +73,8 @@ public class Package {
 		}
 		if(acumulado % 10 == (id.charAt(9)- '0')) {
 			this.id = id;
-			fechaLimite = new GregorianCalendar();
-			fechaLimite.add(Calendar.DAY_OF_MONTH, DIAS_MAXIMO);
+			fechaLimite = LocalDate.now();
+			fechaLimite = fechaLimite.plusDays(DIAS_MAXIMO);
 		} else {
 			throw new IllegalArgumentException("No se verifica el dígito de condición.");		
 		}
@@ -84,20 +84,8 @@ public class Package {
 	 * @param fecha fecha con la que comprobar.
 	 * @return true si se ha pasado y false si no.
 	 */
-	public boolean fechaPasada(GregorianCalendar fecha) {
-		if (fechaLimite.get(Calendar.YEAR) < fecha.get(Calendar.YEAR)) {
-			return true;
-		}else if (fechaLimite.get(Calendar.YEAR) > fecha.get(Calendar.YEAR)) {
-			return false;
-		}else if (fechaLimite.get(Calendar.MONTH) < fecha.get(Calendar.MONTH)) {
-			return true;
-		}else if (fechaLimite.get(Calendar.MONTH) > fecha.get(Calendar.MONTH)){
-			return false;
-		}else if (fechaLimite.get(Calendar.DAY_OF_MONTH) < fecha.get(Calendar.DAY_OF_MONTH)){
-			return true;
-		}else {
-			return false;
-		}
+	public boolean fechaPasada(LocalDate fecha) {
+		return fechaLimite.isAfter(fecha);
 	}
 	/**
 	 * Cambia el estado del paquete a recogido.

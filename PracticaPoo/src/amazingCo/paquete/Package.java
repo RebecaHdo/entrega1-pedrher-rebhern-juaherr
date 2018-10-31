@@ -6,7 +6,7 @@ import java.util.GregorianCalendar;
  * 
  * @author juaherr
  * @author rebhern
- * @author pedherr ToDo
+ * @author pedrher
  * 
  *  Permite la creación de paquetes y controlar el estado del paquete
  *   ademas de saber su fecha límite de recogida.
@@ -25,11 +25,19 @@ public class Package {
 	 */
 	private int estado;
 	
+	/**
+	 * Devuelve la fecha límite del paquete.
+	 * @return fecha límite del paquete.
+	 */
 	public GregorianCalendar getFecha() {
 		return fechaLimite;
 	}
 	
-	private int getEstado() {
+	/**
+	 * Devuelve estado del paquete.
+	 * @return estado del paquete.
+	 */
+	public int getEstado() {
 		return estado;
 	}
 	private void setEstado(int cambio) {
@@ -43,24 +51,29 @@ public class Package {
 		return id;
 	}
 	/**
-	 * Crea el paquete con la id y fecha dadas.
+	 * Crea el paquete con la id y fecha límite a partir de la actual.
 	 * @param id id del paquete siguiendo las restriciones de id "Debe
 	 * tener diez caracteres, de los cuales los primeros nueve son dígitos y 
 	 * el décimo es un dígito resultante delresto de la división entre 10 de 
 	 * la suma de los 9 primeros."
-	 * @param fecha fecha en la que se deposita el paquete en la taquilla, de tipo java.util.GregorianCalendar.
 	 */
-	public Package(String id, GregorianCalendar fecha) {
+	public Package(String id) {
 		if(id.length() != 10) {
 			throw new IllegalArgumentException("La id no tiene no tiene 10 dígitos");		
 			}
 		int acumulado = 0;
 		for(int i = 0; i < 9;i++) {
-			acumulado += (id.charAt(i) - '0');
+			int digito = id.charAt(i) - '0';
+			
+			if( digito < 10 && digito > -1) {
+				acumulado += (digito);
+			} else {
+				throw new IllegalArgumentException("La id contiene caracteres distintos de [0,9]");		
+			}
 		}
 		if(acumulado % 10 == (id.charAt(9)- '0')) {
 			this.id = id;
-			fechaLimite = fecha;
+			fechaLimite = new GregorianCalendar();
 			fechaLimite.add(Calendar.DAY_OF_MONTH, DIAS_MAXIMO);
 		} else {
 			throw new IllegalArgumentException("No se verifica el dígito de condición.");		
@@ -72,7 +85,19 @@ public class Package {
 	 * @return true si se ha pasado y false si no.
 	 */
 	public boolean fechaPasada(GregorianCalendar fecha) {
-		return fechaLimite.after(fecha);
+		if (fechaLimite.get(Calendar.YEAR) < fecha.get(Calendar.YEAR)) {
+			return true;
+		}else if (fechaLimite.get(Calendar.YEAR) > fecha.get(Calendar.YEAR)) {
+			return false;
+		}else if (fechaLimite.get(Calendar.MONTH) < fecha.get(Calendar.MONTH)) {
+			return true;
+		}else if (fechaLimite.get(Calendar.MONTH) > fecha.get(Calendar.MONTH)){
+			return false;
+		}else if (fechaLimite.get(Calendar.DAY_OF_MONTH) < fecha.get(Calendar.DAY_OF_MONTH)){
+			return true;
+		}else {
+			return false;
+		}
 	}
 	/**
 	 * Cambia el estado del paquete a recogido.
@@ -80,8 +105,11 @@ public class Package {
 	public void recogido() {
 		if (getEstado() == 0) {
 			setEstado(1);
-		}else {
+		}else if (getEstado() == 1){
+			throw new IllegalStateException("Paquete ya recogido.");
+		} else {
 			throw new IllegalStateException("Paquete ya devuelto.");
+
 		}
 	}
 	/**
@@ -90,9 +118,11 @@ public class Package {
 	public void devuelto() {
 		if (getEstado() == 0) {
 			setEstado(2);
-		}else {
+		}else if (getEstado() == 1){
 			throw new IllegalStateException("Paquete ya recogido.");
-		}	
+		} else {
+			throw new IllegalStateException("Paquete ya devuelto.");
+		}
 	}
 
 }

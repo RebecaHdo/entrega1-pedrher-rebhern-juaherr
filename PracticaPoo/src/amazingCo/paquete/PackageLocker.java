@@ -40,7 +40,7 @@ public class PackageLocker {
 	 */
 	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
-		compruebaGenerador(horario, numeroTaquillas);
+		compruebaGenerador(id, ubicacion, horario, numeroTaquillas);
 		this.id = id;
 		this.ubicacion = ubicacion;
 		this.horario = horario;
@@ -61,7 +61,7 @@ public class PackageLocker {
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 */
 	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
-		compruebaGenerador(horario, numeroTaquillas);
+		compruebaGenerador(id, ubicacion, horario, numeroTaquillas);
 		this.id = id;
 		this.ubicacion = ubicacion;
 		this.horario = horario;
@@ -69,7 +69,11 @@ public class PackageLocker {
 		this.operativo = true;
 	}
 
-	private void compruebaGenerador(LocalTime[][] horario, int numeroTaquillas) {
+	private void compruebaGenerador(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
+		if (id == null || ubicacion == null || horario == null) {
+			throw new IllegalArgumentException("Uno de los argumentos es null.");
+		}
+		
 		if (horario.length != 7) {
 			throw new IllegalArgumentException("Son necesarios los horarios de los 7 dias.");
 		}
@@ -87,6 +91,10 @@ public class PackageLocker {
 		if (numeroTaquillas < 1) {
 			throw new IllegalArgumentException("Número de taquillas no positivo.");
 
+		}
+		for(int i = 0; i < 7; i++) {
+			
+			
 		}
 	}
 
@@ -166,7 +174,9 @@ public class PackageLocker {
 	 * @return Número de la taquilla en la que está el paquete.
 	 */
 	public int locaclizaPaquete(String idPaquete) {
-		// TODO comprobar si eso
+		if( idPaquete == null) {
+			throw new IllegalArgumentException("La id es null.");
+		}
 		int i = 0;
 		int zona = -1;
 		while (i < getTaquillas().length) {
@@ -191,6 +201,10 @@ public class PackageLocker {
 	 * @param p el paquete a guardar.
 	 */
 	public void asignaPaquete(Package p) {
+		
+		if (p == null) {
+			throw new IllegalArgumentException("El paquete es null.");
+		}
 		if (getNumeroTaquillasLlenas() == getTaquillas().length) {
 			throw new IllegalStateException("Taquillero lleno.");
 		}

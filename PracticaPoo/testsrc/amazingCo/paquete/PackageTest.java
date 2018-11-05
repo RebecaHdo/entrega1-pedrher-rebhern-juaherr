@@ -24,7 +24,12 @@ public class PackageTest {
 		LocalDate fecha = LocalDate.now().plusDays(7);
 		assertEquals(fecha, p.getFecha());
 	}
-
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void testPackageNull() {
+		Package p = new Package(null);
+	}
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageNueveDigitos() {
 		Package p = new Package("012345678");
@@ -121,7 +126,7 @@ public class PackageTest {
 
 	}
 
-	@Test(expected = NullPointerException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testFechaPasadaNull() {
 		Package p = new Package("0000000000");
 		LocalDate fecha = null;

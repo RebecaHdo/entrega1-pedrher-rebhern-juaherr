@@ -62,6 +62,9 @@ public class Package {
 	 *           la suma de los 9 primeros."
 	 */
 	public Package(String id) {
+		if(id == null) {
+			throw new IllegalArgumentException("La id es null.");
+		}
 		if (id.length() != 10) {
 			throw new IllegalArgumentException("La id no tiene no tiene 10 dígitos");
 		}
@@ -91,6 +94,10 @@ public class Package {
 	 * @return true si se ha pasado y false si no.
 	 */
 	public boolean fechaPasada(LocalDate fecha) {
+		if (fecha == null) {
+			throw new IllegalArgumentException("La fecha es null.");
+
+		}
 		return fechaLimite.isAfter(fecha);
 	}
 

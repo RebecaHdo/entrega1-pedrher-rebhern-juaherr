@@ -250,7 +250,7 @@ public class PackageLocker {
 		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
-		} else if (getTaquillas()[idTaquilla].fechaEnPlazo(LocalDate.now())) {
+		} else if (!getTaquillas()[idTaquilla].fechaEnPlazo(LocalDate.now())) {
 			throw new IllegalStateException("La fecha de entrega ha sido superada.");
 
 		}

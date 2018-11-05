@@ -12,7 +12,7 @@ import java.time.LocalDate;
  * 
  *         Permite la creación de taquilleros con su id, horario, ubicación y
  *         número de taquillas, también controlar a los paquetes que tiene dicho
- *         taquillero.
+ *         taquillero. Los numeros de las taquillas comienzan en 0.
  */
 public class PackageLocker {
 
@@ -46,6 +46,7 @@ public class PackageLocker {
 		this.horario = horario;
 		this.numeroTaquillas = numeroTaquillas;
 		this.operativo = operativo;
+		this.taquillas = new Package[numeroTaquillas];
 	}
 
 	/**
@@ -67,24 +68,28 @@ public class PackageLocker {
 		this.horario = horario;
 		this.numeroTaquillas = numeroTaquillas;
 		this.operativo = true;
+		this.taquillas = new Package[numeroTaquillas];
 	}
 
 	private void compruebaGenerador(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
 		if (id == null || ubicacion == null || horario == null) {
 			throw new IllegalArgumentException("Uno de los argumentos es null.");
 		}
-		
+
 		if (horario.length != 7) {
 			throw new IllegalArgumentException("Son necesarios los horarios de los 7 dias.");
 		}
 		for (int i = 0; i < 7; i++) {
+			if (horario[i] == null) {
+				throw new IllegalArgumentException("Uno de los dias es null.");
+			}
 			if (horario[i].length != 2) {
 				throw new IllegalArgumentException("Cada dia tiene que tener horario de apertura y cierre");
 
 			}
 			for (int j = 0; j < 2; j++) {
-				if (horario[i][j].getClass() != LocalTime.class) {
-					throw new IllegalArgumentException("Al menos uno de los hoarios no existe");
+				if (horario[i][j] == null) {
+					throw new IllegalArgumentException("Al menos uno de los horaios no existe");
 				}
 			}
 		}
@@ -92,9 +97,10 @@ public class PackageLocker {
 			throw new IllegalArgumentException("Número de taquillas no positivo.");
 
 		}
-		for(int i = 0; i < 7; i++) {
-			
-			
+		for (int i = 0; i < 7; i++) {
+			if (horario[i][0].isAfter(horario[i][1])) {
+				throw new IllegalArgumentException("Horas mal introducidas. Debe ser Apertura → Cierre");
+			}
 		}
 	}
 
@@ -105,32 +111,36 @@ public class PackageLocker {
 	private Package[] getTaquillas() {
 		return taquillas;
 	}
-	
+
 	/**
 	 * Devuelve la id del taquillero.
+	 * 
 	 * @return id del taquillero.
 	 */
 	public String getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Devuleve la hora de apertura o cierre de la taquilla de un día especificado.
-	 * @param dia dia de la semana que se quiere saber el horario. 
+	 * 
+	 * @param dia dia de la semana que se quiere saber el horario.
 	 * @return
 	 */
 	public LocalTime[] getHorarioDia(int dia) {
 		return horario[dia];
 	}
-	
+
 	/**
 	 * Devuelve true si el taquillero está operativo y false en caso contrario.
+	 * 
 	 * @return boolean true si el taquillero está operativo y false si no lo está.
 	 */
 	public boolean getOperativo() {
 		return operativo;
-		
+
 	}
+
 	/**
 	 * Devuelve el número de taquillas que tiene el taquillero.
 	 * 
@@ -174,7 +184,7 @@ public class PackageLocker {
 	 * @return Número de la taquilla en la que está el paquete.
 	 */
 	public int locaclizaPaquete(String idPaquete) {
-		if( idPaquete == null) {
+		if (idPaquete == null) {
 			throw new IllegalArgumentException("La id es null.");
 		}
 		int i = 0;
@@ -188,7 +198,7 @@ public class PackageLocker {
 			}
 		}
 		if (zona == -1) {
-			throw new IllegalStateException("No existe ese paquete en el taquillero.");
+			throw new IllegalArgumentException("No existe ese paquete en el taquillero.");
 		} else {
 			return zona;
 		}
@@ -201,12 +211,19 @@ public class PackageLocker {
 	 * @param p el paquete a guardar.
 	 */
 	public void asignaPaquete(Package p) {
-		
+
 		if (p == null) {
 			throw new IllegalArgumentException("El paquete es null.");
 		}
-		if (getNumeroTaquillasLlenas() == getTaquillas().length) {
+		if (getNumeroTaquillasLlenas() == getNumeroTaquillas()) {
 			throw new IllegalStateException("Taquillero lleno.");
+		}
+		for (int i = 0; i < getNumeroTaquillas(); i++) {
+			if (getTaquillas()[i] != null) {
+				if (p.getId() == getTaquillas()[i].getId()) {
+					throw new IllegalStateException("Hay otro paquete con la misma id");
+				}
+			}
 		}
 		int i = 0;
 		while (i < getTaquillas().length) {
@@ -217,6 +234,7 @@ public class PackageLocker {
 				i++;
 			}
 		}
+		setOcupadas(getNumeroTaquillasLlenas() + 1);
 
 	}
 
@@ -226,9 +244,13 @@ public class PackageLocker {
 	 * @param idTaquilla Número de la taquilla de la que sacar el paquete.
 	 */
 	public Package sacaPaquete(int idTaquilla) {
+		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
+			throw new IllegalArgumentException(
+					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
+		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
-		} else if (getTaquillas()[idTaquilla].fechaPasada(LocalDate.now())) {
+		} else if (getTaquillas()[idTaquilla].fechaEnPlazo(LocalDate.now())) {
 			throw new IllegalStateException("La fecha de entrega ha sido superada.");
 
 		}
@@ -245,6 +267,10 @@ public class PackageLocker {
 	 * @param idTaquilla Número de la taquilla de la que se devuelve el paquete.
 	 */
 	public Package devuelvePaquete(int idTaquilla) {
+		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
+			throw new IllegalArgumentException(
+					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
+		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}

@@ -93,12 +93,12 @@ public class Package {
 	 * @param fecha fecha con la que comprobar.
 	 * @return true si se ha pasado y false si no.
 	 */
-	public boolean fechaPasada(LocalDate fecha) {
+	public boolean fechaEnPlazo(LocalDate fecha) {
 		if (fecha == null) {
 			throw new IllegalArgumentException("La fecha es null.");
 
 		}
-		return fechaLimite.isAfter(fecha);
+		return !fechaLimite.isBefore(fecha);
 	}
 
 	/**

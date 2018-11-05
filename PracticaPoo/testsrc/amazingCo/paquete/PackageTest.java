@@ -111,26 +111,26 @@ public class PackageTest {
 	}
 
 	@Test
-	public void testFechaPasadaNoPasada() {
+	public void testFechaEnPlazoEnPlazo() {
 		Package p = new Package("0000000000");
 		LocalDate fecha = LocalDate.now().plusDays(7);
-		assertFalse(p.fechaPasada(fecha));
+		assertTrue(p.getFecha() + "<" + fecha,p.fechaEnPlazo(fecha));
 
 	}
 
 	@Test
-	public void testFechaPasadaPasada() {
+	public void testFechaEnPlazoPasada() {
 		Package p = new Package("0000000000");
-		LocalDate fecha = LocalDate.now().plusDays(6);
-		assertTrue(p.getFecha() + "<" + fecha, p.fechaPasada(fecha));
+		LocalDate fecha = LocalDate.now().plusDays(8);
+		assertFalse(p.getFecha() + "<" + fecha, p.fechaEnPlazo(fecha));
 
 	}
 
 	@Test(expected = IllegalArgumentException.class)
-	public void testFechaPasadaNull() {
+	public void testFechaEnPlazoNull() {
 		Package p = new Package("0000000000");
 		LocalDate fecha = null;
-		assertTrue(p.fechaPasada(fecha));
+		assertTrue(p.fechaEnPlazo(fecha));
 
 	}
 

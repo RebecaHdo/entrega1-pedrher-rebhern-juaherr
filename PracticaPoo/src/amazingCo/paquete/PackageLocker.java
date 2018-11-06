@@ -182,6 +182,8 @@ public class PackageLocker {
 	 * 
 	 * @param idPaquete id del paquete.
 	 * @return Número de la taquilla en la que está el paquete.
+	 * @throws IllegalArgumentException si la id es null o si no existe el paquete
+	 *                                  indicado en el taquillero indicado.
 	 */
 	public int locaclizaPaquete(String idPaquete) {
 		if (idPaquete == null) {
@@ -209,6 +211,9 @@ public class PackageLocker {
 	 * Asigna el paquete dado a una taquilla.
 	 * 
 	 * @param p el paquete a guardar.
+	 * @throws IllegalArgumenException Si el paquete es null.
+	 * @throws IllegalStateException   Si el taquillero está lleno o si hay otro
+	 *                                 paquete con la misma id.
 	 */
 	public void asignaPaquete(Package p) {
 
@@ -242,6 +247,9 @@ public class PackageLocker {
 	 * Saca el paquete de la taquilla dada.
 	 * 
 	 * @param idTaquilla Número de la taquilla de la que sacar el paquete.
+	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
+	 * @throws IllegalStateException    Si la taquilla está vacia o si la fecha de
+	 *                                  entrega ha sido superada.
 	 */
 	public Package sacaPaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
@@ -265,6 +273,8 @@ public class PackageLocker {
 	 * Devuelve el paquete a fabrica de la taquilla dada.
 	 * 
 	 * @param idTaquilla Número de la taquilla de la que se devuelve el paquete.
+	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
+	 * @throws IllegalStateException si la taquilla está vacia.
 	 */
 	public Package devuelvePaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {

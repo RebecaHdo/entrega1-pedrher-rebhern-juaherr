@@ -60,9 +60,13 @@ public class Package {
 	 *           caracteres, de los cuales los primeros nueve son dígitos y el
 	 *           décimo es un dígito resultante delresto de la división entre 10 de
 	 *           la suma de los 9 primeros."
+	 * @throws IllegalArgumentException si la id es null o si la longitud de la id
+	 *                                  es distinta de 10 o si los caracteres de la
+	 *                                  id son distintos de [0,9] o si no se
+	 *                                  verifica el dígito de condición.
 	 */
 	public Package(String id) {
-		if(id == null) {
+		if (id == null) {
 			throw new IllegalArgumentException("La id es null.");
 		}
 		if (id.length() != 10) {
@@ -92,6 +96,7 @@ public class Package {
 	 * 
 	 * @param fecha fecha con la que comprobar.
 	 * @return true si se ha pasado y false si no.
+	 * @throws IllegalArgumentException si la fecha es null
 	 */
 	public boolean fechaEnPlazo(LocalDate fecha) {
 		if (fecha == null) {
@@ -103,6 +108,10 @@ public class Package {
 
 	/**
 	 * Cambia el estado del paquete a recogido.
+	 * 
+	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
+	 *                               pesar de que su estado habia sido cambiado a
+	 *                               recogido.
 	 */
 	public void recogido() {
 		if (getEstado() == 0) {
@@ -117,6 +126,10 @@ public class Package {
 
 	/**
 	 * Cambia el estado del paquete a devuelto.
+	 * 
+	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
+	 *                               pesar de que su estado habia sido cambiado a
+	 *                               devuelto.
 	 */
 	public void devuelto() {
 		if (getEstado() == 0) {

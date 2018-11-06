@@ -129,9 +129,7 @@ public class PackageTest {
 	@Test(expected = IllegalArgumentException.class)
 	public void testFechaEnPlazoNull() {
 		Package p = new Package("0000000000");
-		LocalDate fecha = null;
-		assertTrue(p.fechaEnPlazo(fecha));
-
+		p.fechaEnPlazo(null);
 	}
 
 	@Test

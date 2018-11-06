@@ -104,12 +104,27 @@ public class PackageLocker {
 		}
 	}
 
+	private void setOperativo(boolean op) {
+		operativo = op;
+	}
+
 	private void setOcupadas(int numero) {
 		ocupadas = numero;
 	}
 
 	private Package[] getTaquillas() {
 		return taquillas;
+	}
+
+	/**
+	 * Cambia el packageLocker a operativo si está fuera de servicio y viceversa.
+	 */
+	public void operatividad() {
+		if (getOperativo()) {
+			setOperativo(false);
+		} else {
+			setOperativo(true);
+		}
 	}
 
 	/**
@@ -274,7 +289,7 @@ public class PackageLocker {
 	 * 
 	 * @param idTaquilla Número de la taquilla de la que se devuelve el paquete.
 	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
-	 * @throws IllegalStateException si la taquilla está vacia.
+	 * @throws IllegalStateException    si la taquilla está vacia.
 	 */
 	public Package devuelvePaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {

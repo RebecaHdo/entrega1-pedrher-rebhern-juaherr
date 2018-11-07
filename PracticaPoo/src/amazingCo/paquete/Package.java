@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Package {
 
 	private static final int DIAS_MAXIMO = 7;
-
+	//TODO lista estatica de ids
 	private String id;
 	private LocalDate fechaLimite;
 	/*

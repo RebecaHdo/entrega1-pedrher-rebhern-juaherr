@@ -270,9 +270,10 @@ public class PickingPointsSystemTest {
 
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1);
-		assertEquals(pps.getPackageLockerOperativos()[0].getId(),"0000000000");
-		assertEquals(pps.getPackageLockerOperativos().length,1);
+		assertEquals(pps.getPackageLockerOperativos()[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerOperativos().length, 1);
 	}
+
 	@Test
 	public void testGetPackageLockerOperativosNoDevolverNinguno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -283,13 +284,15 @@ public class PickingPointsSystemTest {
 
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
-		assertEquals(pps.getPackageLockerOperativos().length,0);
+		assertEquals(pps.getPackageLockerOperativos().length, 0);
 	}
+
 	@Test(expected = IllegalStateException.class)
 	public void testGetPackageLockerOperativosArrayVacio() {
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.getPackageLockerOperativos();
 	}
+
 	@Test
 	public void testGetPackageLockerFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -299,12 +302,13 @@ public class PickingPointsSystemTest {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 
 		PickingPointsSystem pps = new PickingPointsSystem();
-		pps.crearPackageLocker("0000000000", gps, horario, 1);
-		assertEquals(pps.getPackageLockerFueraDeServicio()[0].getId(),"0000000000");
-		assertEquals(pps.getPackageLockerFueraDeServicio().length,1);
+		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		assertEquals(pps.getPackageLockerFueraDeServicio()[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerFueraDeServicio().length, 1);
 	}
+
 	@Test
-	public void testGetPackageLockerOperativosNoDevolverNinguno() {
+	public void testGetPackageLockerFueraDeServicioNoDevolverNinguno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -312,13 +316,14 @@ public class PickingPointsSystemTest {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 
 		PickingPointsSystem pps = new PickingPointsSystem();
-		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
-		assertEquals(pps.getPackageLockerOperativos().length,0);
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		assertEquals(pps.getPackageLockerFueraDeServicio().length, 0);
 	}
+
 	@Test(expected = IllegalStateException.class)
-	public void testGetPackageLockerOperativosArrayVacio() {
+	public void testGetPackageLockerFueraDeServicioArrayVacio() {
 		PickingPointsSystem pps = new PickingPointsSystem();
-		pps.getPackageLockerOperativos();
+		pps.getPackageLockerFueraDeServicio();
 	}
 
 	@Test
@@ -327,8 +332,100 @@ public class PickingPointsSystemTest {
 	}
 
 	@Test
-	public void testGetPackageLockerConTaquillasVacias() {
-		fail("Not yet implemented");
+	public void testGetPackageLockerTaquillasVacias() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		assertEquals(pps.getPackageLockerTaquillasVacias()[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerTaquillasVacias().length, 1);
+	}
+
+	@Test
+	public void testGetPackageLockerTaquillasVaciasNoDevolverNinguno() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		Package p = new Package("0000000000");
+		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		assertEquals(pps.getPackageLockerTaquillasVacias().length, 0);
+	}
+	@Test(expected = IllegalStateException.class)
+	public void testGetPackageLockerTaquillasVaciasArrayVacio() {
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.getPackageLockerTaquillasVacias();
+	}
+
+	@Test
+	public void testGetPackageLockerTaquillasVaciasOperativas() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos()[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 1);
+	}
+
+	@Test
+	public void testGetPackageLockerTaquillasVaciasOperativasNoDevolverNingunoCeroTaquillas() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		Package p = new Package("0000000000");
+		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 0);
+	}
+	
+	@Test
+	public void testGetPackageLockerTaquillasVaciasOperativasNoDevolverNingunoFueraDeServicio() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 0);
+	}
+
+	@Test
+	public void testGetPackageLockerTaquillasVaciasOperativasNoDevolverNingunoFueraDeServicioLleno() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		Package p = new Package("0000000000");
+		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		
+		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 0);
+	}
+	@Test(expected = IllegalStateException.class)
+	public void testGetPackageLockerTaquillasVaciasOperativoArrayVacio() {
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.getPackageLockerTaquillasVaciasOperativos();
 	}
 
 }

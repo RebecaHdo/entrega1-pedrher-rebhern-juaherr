@@ -17,7 +17,7 @@ import es.uva.inf.poo.maps.GPSCoordinate;
 public class PickingPointsSystem {
 
 	private ArrayList<PackageLocker> listaTaquilleros;
-	
+
 	private ArrayList<PackageLocker> getListaTaquilleros() {
 		return listaTaquilleros;
 	}
@@ -46,7 +46,8 @@ public class PickingPointsSystem {
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
-		if (id == null || ubicacion == null || horario == null) {
+	//TODO devolver PackageLocker.	
+			if (id == null || ubicacion == null || horario == null) {
 			throw new IllegalArgumentException("Uno de los argumentos es null.");
 		}
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
@@ -92,7 +93,7 @@ public class PickingPointsSystem {
 	 * @param id del PackageLocker a borrar.
 	 */
 	public void eliminarPackageLocker(String id) {
-		if(getListaTaquilleros().size() == 0) {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
 		int i = 0;
@@ -107,32 +108,36 @@ public class PickingPointsSystem {
 
 			}
 		}
-		if(!encontrado) {
+		if (!encontrado) {
 			throw new IllegalArgumentException("No existe ningún taquillero con esa id.");
 
 		}
 	}
+
 	/**
 	 * Devuelve un array de todos los PackageLockers.
+	 * 
 	 * @return array de todos los PackageLockers.
 	 */
 	public PackageLocker[] getTodosPackageLocker() {
 		PackageLocker[] vector = new PackageLocker[getListaTaquilleros().size()];
-		for(int i = 0; i < getListaTaquilleros().size();i++) {
+		for (int i = 0; i < getListaTaquilleros().size(); i++) {
 			vector[i] = getListaTaquilleros().get(i);
 		}
 		return vector;
 	}
+
 	/**
 	 * Devuelve un array de todos los PackageLockers.
+	 * 
 	 * @return array de todos los PackageLockers.
 	 */
 	public PackageLocker getPackageLocker(String id) {
-		if(getListaTaquilleros().size() == 0) {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
 		int i = 0;
-		PackageLocker taquillero= null;
+		PackageLocker taquillero = null;
 		while (i < getListaTaquilleros().size()) {
 			if (id == getListaTaquilleros().get(i).getId()) {
 				taquillero = getListaTaquilleros().get(i);
@@ -141,21 +146,22 @@ public class PickingPointsSystem {
 				i++;
 
 			}
-		}
-		if(taquillero == null) {
+		} 
+		if (taquillero == null) {
 			throw new IllegalArgumentException("No existe ningún taquillero con esa id.");
 
-		}else {
+		} else {
 			return taquillero;
 		}
 	}
+
 	/**
 	 * Devuelve un array de PackageLockers operativos.
 	 * 
 	 * @return array de PackageLockers operativos.
 	 */
 	public PackageLocker[] getPackageLockerOperativos() {
-		if(getListaTaquilleros().size() == 0) {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
 		int contador = 0;
@@ -181,7 +187,7 @@ public class PickingPointsSystem {
 	 * @return array de PackageLockers fuera de servicio.
 	 */
 	public PackageLocker[] getPackageLockerFueraDeServicio() {
-		if(getListaTaquilleros().size() == 0) {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
 		int contador = 0;
@@ -210,10 +216,10 @@ public class PickingPointsSystem {
 	 * @return
 	 */
 	public PackageLocker[] getPackageLockerEnZona(GPSCoordinate ubicacion, double radio) {
-		if(getListaTaquilleros().size() == 0) {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
-		if(radio < 0) {
+		if (radio < 0) {
 			throw new IllegalArgumentException("El radio no puede ser negativo.");
 		}
 		int contador = 0;
@@ -235,7 +241,7 @@ public class PickingPointsSystem {
 			}
 		}
 		return vector;
-		
+
 	}
 
 	/**
@@ -243,8 +249,8 @@ public class PickingPointsSystem {
 	 * 
 	 * @return array de PackageLockers con taquillas vacias.
 	 */
-	public PackageLocker[] getPackageLockerConTaquillasVacias() {
-		if(getListaTaquilleros().size() == 0) {
+	public PackageLocker[] getPackageLockerTaquillasVacias() {
+		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
 		int contador = 0;
@@ -257,6 +263,29 @@ public class PickingPointsSystem {
 		contador = 0;
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
 			if (getListaTaquilleros().get(i).getNumeroTaquillasVacias() != 0) {
+				vector[contador] = getListaTaquilleros().get(i);
+				contador++;
+			}
+		}
+		return vector;
+	}
+
+	public PackageLocker[] getPackageLockerTaquillasVaciasOperativos() {
+		if (getListaTaquilleros().size() == 0) {
+			throw new IllegalStateException("No hay taquilleros guardados.");
+		}
+		int contador = 0;
+		for (int i = 0; i < getListaTaquilleros().size(); i++) {
+			if (getListaTaquilleros().get(i).getNumeroTaquillasVacias() != 0
+					&& getListaTaquilleros().get(i).getOperativo()) {
+				contador++;
+			}
+		}
+		PackageLocker[] vector = new PackageLocker[contador];
+		contador = 0;
+		for (int i = 0; i < getListaTaquilleros().size(); i++) {
+			if (getListaTaquilleros().get(i).getNumeroTaquillasVacias() != 0
+					&& getListaTaquilleros().get(i).getOperativo()) {
 				vector[contador] = getListaTaquilleros().get(i);
 				contador++;
 			}

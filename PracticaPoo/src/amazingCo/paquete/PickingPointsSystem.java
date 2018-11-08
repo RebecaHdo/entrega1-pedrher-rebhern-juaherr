@@ -178,7 +178,7 @@ public class PickingPointsSystem {
 				contador++;
 			}
 		}
-		return vector;
+		return vector; //TODO unir en uno con un argumento.
 	}
 
 	/**

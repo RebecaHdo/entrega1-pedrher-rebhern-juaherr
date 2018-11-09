@@ -4,6 +4,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
+//TODO gitignore al javadoc
 /**
  * 
  * @author juaherr

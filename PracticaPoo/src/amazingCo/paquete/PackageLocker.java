@@ -140,7 +140,7 @@ public class PackageLocker {
 	 * Devuleve la hora de apertura o cierre de la taquilla de un día especificado.
 	 * 
 	 * @param dia dia de la semana que se quiere saber el horario.
-	 * @return horario array con la hora de apertura y cierre del día indicado.
+	 * @return
 	 */
 	public LocalTime[] getHorarioDia(int dia) {
 		return horario[dia];
@@ -226,7 +226,7 @@ public class PackageLocker {
 	 * Asigna el paquete dado a una taquilla.
 	 * 
 	 * @param p el paquete a guardar.
-	 * @throws IllegalArgumentException Si el paquete es null.
+	 * @throws IllegalArgumenException Si el paquete es null.
 	 * @throws IllegalStateException   Si el taquillero está lleno o si hay otro
 	 *                                 paquete con la misma id.
 	 */
@@ -263,9 +263,8 @@ public class PackageLocker {
 	 * 
 	 * @param idTaquilla Número de la taquilla de la que sacar el paquete.
 	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
-	 * @throws IllegalStateException  Si la taquilla está vacia o si la fecha de
+	 * @throws IllegalStateException    Si la taquilla está vacia o si la fecha de
 	 *                                  entrega ha sido superada.
-	 * @return paquete correspondiente a la id de la taquilla indicada.
 	 */
 	public Package sacaPaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
@@ -291,7 +290,6 @@ public class PackageLocker {
 	 * @param idTaquilla Número de la taquilla de la que se devuelve el paquete.
 	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia.
-	 * @return paquete en la taquilla solicitada.
 	 */
 	public Package devuelvePaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {

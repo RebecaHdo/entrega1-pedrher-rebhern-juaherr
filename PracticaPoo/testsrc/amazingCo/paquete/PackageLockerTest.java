@@ -7,8 +7,19 @@ import java.time.LocalTime;
 import org.junit.Test;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
+/*
+ * Batería de pruebas de la clase PackageLocker.
+ * @author juaherr
+ * @author rebhern
+ * @author pedrher
+ * 
+ */
 public class PackageLockerTest {
-
+	/*
+	 * Prueba válida del generador con opción de operativo. Todos los argumentos introducidos son válidos.
+	 * id = 0000000000
+	 * ubicacion = (41.6551455, -4.7381979)
+	 */
 	@Test
 	public void testPackageLockerConOpcionOperativo() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -430,7 +441,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 0, true);
 
 	}
-	
+
 	@Test
 	public void testOperatividadDeOperativoAFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -442,6 +453,7 @@ public class PackageLockerTest {
 		t.operatividad();
 		assertFalse(t.getOperativo());
 	}
+
 	@Test
 	public void testOperatividadDeFueraDeServicioAOperativo() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -453,7 +465,7 @@ public class PackageLockerTest {
 		t.operatividad();
 		assertTrue(t.getOperativo());
 	}
-	
+
 	@Test
 	public void testGetNumeroTaquillas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -675,8 +687,8 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
-		assertEquals(t.sacaPaquete(0).getId(),"0000000000");
-		
+		assertEquals(t.sacaPaquete(0).getId(), "0000000000");
+
 	}
 
 	@Test
@@ -691,11 +703,11 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 2);
 		t.asignaPaquete(p);
 		t.asignaPaquete(p2);
-		assertEquals(t.sacaPaquete(1).getId(),"0000000011");
-		
+		assertEquals(t.sacaPaquete(1).getId(), "0000000011");
+
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testSacaPaqueteMenorCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -706,10 +718,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
 		t.sacaPaquete(-1);
-		
+
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testSacaPaqueteMayorNumeroTaquillas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -720,10 +732,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
 		t.sacaPaquete(1);
-		
+
 	}
-	
-	@Test (expected=IllegalStateException.class)
+
+	@Test(expected = IllegalStateException.class)
 	public void testSacaPaqueteTaquillaVacia() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -732,10 +744,10 @@ public class PackageLockerTest {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.sacaPaquete(0);
-		
+
 	}
-	//TODO revisar fechaaaaaaas
-	
+	// TODO revisar fechaaaaaaas
+
 	@Test
 	public void testDevuelvePaquete() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -746,8 +758,8 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
-		assertEquals(t.devuelvePaquete(0).getId(),"0000000000");
-		
+		assertEquals(t.devuelvePaquete(0).getId(), "0000000000");
+
 	}
 
 	@Test
@@ -762,11 +774,11 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 2);
 		t.asignaPaquete(p);
 		t.asignaPaquete(p2);
-		assertEquals(t.devuelvePaquete(1).getId(),"0000000011");
-		
+		assertEquals(t.devuelvePaquete(1).getId(), "0000000011");
+
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testDevuelvePaqueteMenorCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -777,10 +789,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
 		t.devuelvePaquete(-1);
-		
+
 	}
-	
-	@Test (expected=IllegalArgumentException.class)
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testDevuelvePaqueteMayorNumeroTaquillas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -791,10 +803,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
 		t.devuelvePaquete(1);
-		
+
 	}
-	
-	@Test (expected=IllegalStateException.class)
+
+	@Test(expected = IllegalStateException.class)
 	public void testDevuelvePaqueteTaquillaVacia() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -803,7 +815,7 @@ public class PackageLockerTest {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.devuelvePaquete(0);
-		
+
 	}
 
 }

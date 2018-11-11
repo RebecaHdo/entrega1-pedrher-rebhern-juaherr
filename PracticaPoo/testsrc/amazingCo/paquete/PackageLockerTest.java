@@ -16,9 +16,8 @@ import es.uva.inf.poo.maps.GPSCoordinate;
  */
 public class PackageLockerTest {
 	/*
-	 * Prueba válida del generador con opción de operativo. Todos los argumentos introducidos son válidos.
-	 * id = 0000000000
-	 * ubicacion = (41.6551455, -4.7381979)
+	 * Pruebas válidas de los generadores.
+	 * 
 	 */
 	@Test
 	public void testPackageLockerConOpcionOperativo() {
@@ -63,6 +62,9 @@ public class PackageLockerTest {
 
 	}
 
+	/*
+	 * Pruebas no válidas del generador con opción de operatividad.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoIdNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -88,6 +90,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, null, 1, true);
 	}
 
+	/*
+	 * Pruebas no válida del generador con opción de operatividad donde se analiza
+	 * el horario como un conjunto, por tanto se prueba en los extremos los erroes.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHorarioOchoDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -230,6 +236,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	/*
+	 * Pruebas no váidas del generador con opción de operativiad respecto al número
+	 * de Taquillas.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoTaquillasNegativas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -252,7 +262,9 @@ public class PackageLockerTest {
 
 	}
 
-//TODO aqui
+	/*
+	 * Pruebas no válidas del generador con taquillero operativo.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteIdNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -278,6 +290,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, null, 1);
 	}
 
+	/*
+	 * Pruebas no válida del generador del taquillero operativo donde se analiza el
+	 * horario como un conjunto, por tanto se prueba en los extremos los erroes.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHorarioOchoDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -420,6 +436,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	/*
+	 * Pruebas no váidas del generador de taquillero operativo respecto al número de
+	 * Taquillas.
+	 */
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteTaquillasNegativas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -442,6 +462,9 @@ public class PackageLockerTest {
 
 	}
 
+	/*
+	 * Pruebas del método getOperatividad().
+	 */
 	@Test
 	public void testOperatividadDeOperativoAFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -466,6 +489,9 @@ public class PackageLockerTest {
 		assertTrue(t.getOperativo());
 	}
 
+	/*
+	 * Pruebas del método getNumeroTaquillas().
+	 */
 	@Test
 	public void testGetNumeroTaquillas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -477,6 +503,9 @@ public class PackageLockerTest {
 		assertEquals(t.getNumeroTaquillas(), 1);
 	}
 
+	/*
+	 * Pruebas del método getNumeroTaquillasLLenas().
+	 */
 	@Test
 	public void testGetNumeroTaquillasLlenasTaquilleroVacio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -517,6 +546,9 @@ public class PackageLockerTest {
 		assertEquals(t.getNumeroTaquillasLlenas(), 2);
 	}
 
+	/*
+	 * Pruebas del método getNumeroTaquillasVacias().
+	 */
 	@Test
 	public void testGetNumeroTaquillasVaciasTaquilleroVacio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -529,7 +561,7 @@ public class PackageLockerTest {
 	}
 
 	@Test
-	public void testGetNumeroTaquillasVaciasTaquilleroUno() {
+	public void testGetNumeroTaquillasVaciasTaquilleroUnoLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -541,6 +573,7 @@ public class PackageLockerTest {
 		assertEquals(t.getNumeroTaquillasVacias(), 0);
 	}
 
+//TODO esta
 	@Test
 	public void testGetNumeroTaquillasVaciasTaquilleroLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -554,9 +587,12 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 2);
 		t.asignaPaquete(p);
 		t.asignaPaquete(p2);
-		assertEquals(t.getNumeroTaquillasLlenas(), 2);
+		assertEquals(t.getNumeroTaquillasVacias(), 0);
 	}
 
+	/*
+	 * Pruebaa del método getUbicacion().
+	 */
 	@Test
 	public void testGetUbicacion() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -568,6 +604,9 @@ public class PackageLockerTest {
 		assertEquals(t.getUbicacion(), gps);
 	}
 
+	/*
+	 * Pruebas del método localizaPaquete().
+	 */
 	@Test
 	public void testLocaclizaPaquetePrimeraPosicion() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -623,6 +662,9 @@ public class PackageLockerTest {
 		t.locaclizaPaquete("0000000001");
 	}
 
+	/*
+	 * Pruebas del método asignaPaquete().
+	 */
 	@Test
 	public void testAsignaPaquete() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -677,6 +719,9 @@ public class PackageLockerTest {
 		t.asignaPaquete(p2);
 	}
 
+	/*
+	 * Pruebas del método sacaPaquete().
+	 */
 	@Test
 	public void testSacaPaquete() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -731,6 +776,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
+		// el numero de taquillas empieza en 0
 		t.sacaPaquete(1);
 
 	}
@@ -746,8 +792,11 @@ public class PackageLockerTest {
 		t.sacaPaquete(0);
 
 	}
-	// TODO revisar fechaaaaaaas
 
+	// TODO revisar fechaaaaaaas
+	/*
+	 * Pruebas del método devuelvePaquete().
+	 */
 	@Test
 	public void testDevuelvePaquete() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },

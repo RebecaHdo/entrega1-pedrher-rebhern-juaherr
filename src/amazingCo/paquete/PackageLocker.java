@@ -264,22 +264,29 @@ public class PackageLocker {
 	 * Saca el paquete de la taquilla dada.
 	 * 
 	 * @param idTaquilla id de la taquilla de la que sacar el paquete.
+	 * @param fechaSacada fecha en la que se saca el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia o si la fecha de
 	 *                                  entrega ha sido superada.
 	 * @return paquete que estaba en la taquilla indicada.
 	 */
-	public Package sacaPaquete(int idTaquilla) {
+	public Package sacaPaquete(int idTaquilla, LocalDate fechaSacada) {
+		if(!getOperativo()) {
+			throw new IllegalStateException("El taquillero no está operativo.");
+
+		}
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
 			throw new IllegalArgumentException(
 					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
 		}
+		if (fechaSacada == null) {
+			throw new IllegalArgumentException("La fecha es nula.");
+		
+		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
-			// TODO arreglamos esto o lo dejamos así?
-			// la batería de pruebas no entra en este else if porque el porque el día de
-			// creaciónd el paquete y de recogid siempre es el msimo
-		} else if (!getTaquillas()[idTaquilla].fechaEnPlazo(LocalDate.now())) {
+
+		} else if (!getTaquillas()[idTaquilla].fechaEnPlazo(fechaSacada)) {
 			throw new IllegalStateException("La fecha de entrega ha sido superada.");
 
 		}
@@ -289,7 +296,7 @@ public class PackageLocker {
 		getTaquillas()[idTaquilla] = null;
 		return paquete;
 	}
-
+	
 	/**
 	 * Devuelve el paquete al almacén de la taquilla dada.
 	 * 

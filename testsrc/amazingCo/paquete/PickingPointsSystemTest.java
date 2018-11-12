@@ -332,15 +332,74 @@ public class PickingPointsSystemTest {
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
 				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
-		GPSCoordinate gps = new GPSCoordinate(0, 0);
-		GPSCoordinate gps2 = new GPSCoordinate(0, 1);
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		GPSCoordinate gps2 = new GPSCoordinate(0.9999909564, 1);
 
 		PickingPointsSystem pps = new PickingPointsSystem();
-		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		assertEquals(pps.getPackageLockerEnZona(gps2 , 1)[0].getId(), "0000000000");
-		assertEquals(pps.getPackageLockerTaquillasVacias().length, 1);
+		assertEquals(pps.getPackageLockerEnZona(gps2 , 1).length, 1);
 	}
+	@Test
+	public void testGetPackageLockerEnZonaNoEnZona() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		GPSCoordinate gps2 = new GPSCoordinate(0.9999909563, 1);
 
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		assertEquals(pps.getPackageLockerEnZona(gps2 , 0).length, 0);
+	}
+	@Test
+	public void testGetPackageLockerEnZonaRadioCeroMetros() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		GPSCoordinate gps2 = new GPSCoordinate(1, 1);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		assertEquals(pps.getPackageLockerEnZona(gps2 , 0)[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerEnZona(gps2 , 0).length, 1);
+	}
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetPackageLockerEnZonaRadioNegativo() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		GPSCoordinate gps2 = new GPSCoordinate(0.9999909564, 1);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		pps.getPackageLockerEnZona(gps2 , -1);
+	}
+	
+	@Test (expected = IllegalArgumentException.class)
+	public void testGetPackageLockerEnZonaUbicacionNula() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
+		pps.getPackageLockerEnZona(null , 1);
+	}
+	
+	@Test(expected = IllegalStateException.class)
+	public void testGetPackageLockerEnZonaArrayVacio() {
+		PickingPointsSystem pps = new PickingPointsSystem();
+		GPSCoordinate gps = new GPSCoordinate(1, 1);
+		pps.getPackageLockerEnZona(gps , 1);
+	}
+	
 	@Test
 	public void testGetPackageLockerTaquillasVacias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -350,7 +409,7 @@ public class PickingPointsSystemTest {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 
 		PickingPointsSystem pps = new PickingPointsSystem();
-		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		assertEquals(pps.getPackageLockerTaquillasVacias()[0].getId(), "0000000000");
 		assertEquals(pps.getPackageLockerTaquillasVacias().length, 1);
 	}
@@ -362,7 +421,6 @@ public class PickingPointsSystemTest {
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
 				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
-
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		Package p = new Package("0000000000");

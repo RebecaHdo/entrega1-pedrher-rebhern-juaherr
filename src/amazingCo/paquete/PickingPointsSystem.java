@@ -4,7 +4,6 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
-//TODO gitignore al javadoc
 /**
  * 
  * @author juaherr
@@ -51,7 +50,6 @@ public class PickingPointsSystem {
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
-		// TODO devolver PackageLocker.
 		if (id == null || ubicacion == null || horario == null) {
 			throw new IllegalArgumentException("Uno de los argumentos es null.");
 		}
@@ -231,6 +229,9 @@ public class PickingPointsSystem {
 	 *         ubicación indicada.
 	 */
 	public PackageLocker[] getPackageLockerEnZona(GPSCoordinate ubicacion, double radio) {
+		if(ubicacion == null) {
+			throw new IllegalArgumentException("La ubicación es nula.");
+		}
 		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
@@ -240,9 +241,8 @@ public class PickingPointsSystem {
 		int contador = 0;
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
 			double distancia = getListaTaquilleros().get(i).getUbicacion().getDistanceTo(ubicacion);
-			//TODO System.out.println(distancia);
 			distancia *= 1000;
-			if (distancia < radio) {
+			if (distancia <= radio) {
 				contador++;
 			}
 		}
@@ -251,7 +251,7 @@ public class PickingPointsSystem {
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
 			double distancia = getListaTaquilleros().get(i).getUbicacion().getDistanceTo(ubicacion);
 			distancia *= 1000;
-			if (distancia < radio) {
+			if (distancia <= radio) {
 				vector[contador] = getListaTaquilleros().get(i);
 				contador++;
 			}

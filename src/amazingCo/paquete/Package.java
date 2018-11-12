@@ -76,7 +76,8 @@ public class Package {
 		for (int i = 0; i < 9; i++) {
 			int digito = id.charAt(i) - '0';
 
-			if (digito < 10 && digito > -1) { 
+			//Una de las ramas es inaccesible ya que 10 < digito < 1 es imposible. 
+			if (digito < 10 && digito > -1) {
 				acumulado += (digito);
 			} else {
 				throw new IllegalArgumentException("La id contiene caracteres distintos de [0,9]");
@@ -87,7 +88,7 @@ public class Package {
 			fechaLimite = LocalDate.now();
 			fechaLimite = fechaLimite.plusDays(DIAS_MAXIMO);
 		} else {
-			throw new IllegalArgumentException("No se verifica el dígito de condición."); 
+			throw new IllegalArgumentException("No se verifica el dígito de condición.");
 		}
 	}
 

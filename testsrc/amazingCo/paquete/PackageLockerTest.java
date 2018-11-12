@@ -3,6 +3,7 @@ package amazingCo.paquete;
 import static org.junit.Assert.*;
 
 import java.time.LocalTime;
+import java.time.LocalDate;
 
 import org.junit.Test;
 import es.uva.inf.poo.maps.GPSCoordinate;
@@ -573,7 +574,6 @@ public class PackageLockerTest {
 		assertEquals(t.getNumeroTaquillasVacias(), 0);
 	}
 
-//TODO esta
 	@Test
 	public void testGetNumeroTaquillasVaciasTaquilleroLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -732,7 +732,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
-		assertEquals(t.sacaPaquete(0).getId(), "0000000000");
+		assertEquals(t.sacaPaquete(0, LocalDate.now().plusDays(7)).getId(), "0000000000");
 
 	}
 
@@ -748,10 +748,22 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 2);
 		t.asignaPaquete(p);
 		t.asignaPaquete(p2);
-		assertEquals(t.sacaPaquete(1).getId(), "0000000011");
+		assertEquals(t.sacaPaquete(1, LocalDate.now().plusDays(7)).getId(), "0000000011");
 
 	}
+	@Test( expected = IllegalStateException.class)
+	public void testSacaPaqueteTaquilleroFueraDeServicio() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+		Package p = new Package("0000000000");
+		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, false);
+		t.asignaPaquete(p);
+		assertEquals(t.sacaPaquete(0, LocalDate.now().plusDays(7)).getId(), "0000000000");
 
+	}
 	@Test(expected = IllegalArgumentException.class)
 	public void testSacaPaqueteMenorCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -762,7 +774,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
-		t.sacaPaquete(-1);
+		t.sacaPaquete(-1, LocalDate.now().plusDays(7));
 
 	}
 
@@ -777,7 +789,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.asignaPaquete(p);
 		// el numero de taquillas empieza en 0
-		t.sacaPaquete(1);
+		t.sacaPaquete(1, LocalDate.now().plusDays(7));
 
 	}
 
@@ -789,11 +801,36 @@ public class PackageLockerTest {
 				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
-		t.sacaPaquete(0);
+		t.sacaPaquete(0, LocalDate.now().plusDays(7));
+
+	}
+	@Test(expected = IllegalArgumentException.class)
+	public void testSacaPaqueteFechaNull() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+		Package p = new Package("0000000000");
+		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
+		t.asignaPaquete(p);
+		t.sacaPaquete(0, null);
 
 	}
 
-	// TODO revisar fechaaaaaaas
+	@Test(expected = IllegalStateException.class)
+	public void testSacaPaqueteFechaFueraDePlazo() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+		Package p = new Package("0000000000");
+		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
+		t.asignaPaquete(p);
+		t.sacaPaquete(0, LocalDate.now().plusDays(8));
+
+	}
 	/*
 	 * Pruebas del método devuelvePaquete().
 	 */

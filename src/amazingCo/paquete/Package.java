@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * 
  *         Permite la creación de paquetes, controlar y conocer el estado del
  *         paquete, ya sea si este ha sido devuelto o recogido y saber su fecha
- *         límite de recogida. 
+ *         límite de recogida.
  */
 public class Package {
 

@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
 /**
- * Administra los taquilleros, pudiendo añiadir o eliminarlos, ver los
- * operativos y fuera de servicio, encontrar los que hay en un radio dado y ver
- * cuales tienen taquillas vacias.
+ * Administra los taquilleros, pudiendo añadirlos o eliminarlos, ver los
+ * operativos y fuera de servicio, encontrar los que hay en un radio dado, ver
+ * cuales tienen taquillas vacias y cuales están completamente llenos.
  * 
  * @author juaherr
  * @author rebhern
@@ -23,7 +23,7 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Inicializa PickingPointsSystem
+	 * Inicializa PickingPointsSystem.
 	 */
 	public PickingPointsSystem() {
 		listaTaquilleros = new ArrayList<PackageLocker>();
@@ -43,6 +43,9 @@ public class PickingPointsSystem {
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 * @param operativo       indica si el taquillero está operativo desde el
 	 *                        momento creado o no.
+	 * @throws IllegalArgumentException si uno de los argumentos es null.
+	 * @throws IllegalArgumentException si ya existe un taquillero con la id
+	 *                                  introducida.
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
@@ -71,6 +74,9 @@ public class PickingPointsSystem {
 	 *                        [[LocalTime (apertura),Localtime
 	 *                        (cierre)],...,[LocalTime,Localtime]]
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
+	 * @throws IllegalArgumentException si uno de los argumentos es null.
+	 * @throws IllegalArgumentException si ya existe un taquillero con la id
+	 *                                  introducida.
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
 		if (id == null || ubicacion == null || horario == null) {
@@ -87,18 +93,29 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Elimina un PackageLocker por id.
+	 * Elimina un PackageLocker por id introducida.
 	 * 
 	 * @param id del PackageLocker a borrar.
+	 * @throws IllegalStateException    si no hay ningún taquillero creado.
+	 * @throws IllegalStateException    si hay paquetes sin recoger o devolver en el
+	 *                                  taquillero.
+	 * @throws IllegalArgumentException si no existe ningún taquillero con la id
+	 *                                  introducida.
 	 */
 	public void eliminarPackageLocker(String id) {
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creado.");
 		}
 		int i = 0;
 		boolean encontrado = false;
 		while (i < getListaTaquilleros().size()) {
-			if (id == getListaTaquilleros().get(i).getId()) {
+			PackageLocker taquillero = getListaTaquilleros().get(i);
+			if (id == taquillero.getId()) {
+				for (int j = 0; j < taquillero.getNumeroTaquillas(); j++) {
+					if (taquillero.getTaquillas()[j] != null) {
+						throw new IllegalStateException("Todavia hay paquetes en el taquillero.");
+					}
+				}
 				getListaTaquilleros().remove(i);
 				i = getListaTaquilleros().size();
 				encontrado = true;
@@ -114,9 +131,9 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de todos los PackageLockers.
+	 * Devuelve todos los PackageLockers.
 	 * 
-	 * @return array de todos los PackageLockers.
+	 * @return todos los PackageLockers.
 	 */
 	public PackageLocker[] getTodosPackageLocker() {
 		PackageLocker[] vector = new PackageLocker[getListaTaquilleros().size()];
@@ -127,15 +144,18 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de todos los PackageLockers.
+	 * Devuelve el PackageLocker correspondiente a la id introducida.
 	 * 
-	 * @param id id del packagelocker.
-	 * @return el packagelocker con la id dada.
+	 * @param id id del packagelocker que se quiere obtener.
+	 * @return packagelocker con la id dada.
+	 * @throws IllegalStateException    si no hay taquilleros creados.
+	 * @throws IllegalArgumentException si no existe ningún taquillero con la id
+	 *                                  introducida.
 	 * 
 	 */
 	public PackageLocker getPackageLocker(String id) {
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creados.");
 		}
 		int i = 0;
 		PackageLocker taquillero = null;
@@ -157,13 +177,17 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de PackageLockers operativos.
+	 * Devuelve todos los PackageLockers operativos.
 	 * 
-	 * @return array de PackageLockers operativos.
+	 * @return PackageLockers operativos.
+	 * @throws IllegalStateException si no hay taquilleros creados.
+	 * 
 	 */
 	public PackageLocker[] getPackageLockerOperativos() {
+		// recorre dos veces la lista de packageLockers creados. Una para conocer el
+		// tamaño del vector que se devulve y otra para rellenarlo.
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creados.");
 		}
 		int contador = 0;
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
@@ -183,11 +207,15 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de PackageLockers fuera de servicio.
+	 * Devuelve todos los PackageLockers fuera de servicio.
 	 * 
-	 * @return array de PackageLockers fuera de servicio.
+	 * @return PackageLockers fuera de servicio.
+	 * @throws IllegalStateException si no hay taquilleros creados.
+	 * 
 	 */
 	public PackageLocker[] getPackageLockerFueraDeServicio() {
+		// recorre dos veces la lista de packageLockers creados. Una para conocer el
+		// tamaño del vector que se devulve y otra para rellenarlo.
 		if (getListaTaquilleros().size() == 0) {
 			throw new IllegalStateException("No hay taquilleros guardados.");
 		}
@@ -209,20 +237,22 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de PackagerLockers ordenados por orden de cercania que
-	 * estén dentro del randio dado a la ubicación dada.
+	 * Devuelve los PackagerLockers en radio dado desde una ubicación dada.
 	 * 
 	 * @param ubicacion zona desde la que se genera el radio.
 	 * @param radio     distancia desde la ubicación que se quiere abarcar.
-	 * @return vector todos los taquilleros que están a un radio indicado desde una
-	 *         ubicación indicada.
+	 * @return todos los taquilleros operativos que están en el radio indicado desde
+	 *         la ubicación indicada.
+	 * @throws IllegalArgumentException si la ubicaón introducida es nula.
+	 * @throws IllegalArgumentException si el radioi dado es negativo.
+	 * @throws IllegalStateException    si no hay taquilleros creados.
 	 */
 	public PackageLocker[] getPackageLockerEnZona(GPSCoordinate ubicacion, double radio) {
 		if (ubicacion == null) {
 			throw new IllegalArgumentException("La ubicación es nula.");
 		}
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creados.");
 		}
 		if (radio < 0) {
 			throw new IllegalArgumentException("El radio no puede ser negativo.");
@@ -250,13 +280,16 @@ public class PickingPointsSystem {
 	}
 
 	/**
-	 * Devuelve un array de PackageLockers con taquillas vacias.
+	 * Devuelve todos los PackageLockers con alguna taquilla vacia.
 	 * 
-	 * @return array de PackageLockers con taquillas vacias.
+	 * @return PackageLockers con taquillas vacias.
+	 * @throws IllegalStateException si no hay taquilleros creados.
 	 */
 	public PackageLocker[] getPackageLockerTaquillasVacias() {
+		// recorre dos veces la lista de packageLockers creados. Una para conocer el
+		// tamaño del vector que se devulve y otra para rellenarlo.
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creados.");
 		}
 		int contador = 0;
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {
@@ -275,9 +308,17 @@ public class PickingPointsSystem {
 		return vector;
 	}
 
-	public PackageLocker[] getPackageLockerTaquillasVaciasOperativos() {
+	/**
+	 * Devuelve todos los PackageLockers operativos con alguna taquilla vacia.
+	 * 
+	 * @return PackageLockers operativos con taquillas vacias.
+	 * @throws IllegalStateException si no hay taquilleros creados.
+	 */
+	public PackageLocker[] getPackageLockerTaquillasVaciasOperativas() {
+		// recorre dos veces la lista de packageLockers creados. Una para conocer el
+		// tamaño del vector que se devulve y otra para rellenarlo.
 		if (getListaTaquilleros().size() == 0) {
-			throw new IllegalStateException("No hay taquilleros guardados.");
+			throw new IllegalStateException("No hay taquilleros creados.");
 		}
 		int contador = 0;
 		for (int i = 0; i < getListaTaquilleros().size(); i++) {

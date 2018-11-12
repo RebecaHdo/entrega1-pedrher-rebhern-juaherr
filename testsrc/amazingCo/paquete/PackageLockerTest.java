@@ -32,7 +32,7 @@ public class PackageLockerTest {
 		assertEquals(t.getId(), "0000000000");
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 2; j++) {
-				assertEquals(t.getHorarioDia(i)[j], horario[i][j]);
+				assertEquals(t.getHorarioDia()[i][j], horario[i][j]);
 
 			}
 		}
@@ -53,7 +53,7 @@ public class PackageLockerTest {
 		assertEquals(t.getId(), "0000000000");
 		for (int i = 0; i < 7; i++) {
 			for (int j = 0; j < 2; j++) {
-				assertEquals(t.getHorarioDia(i)[j], horario[i][j]);
+				assertEquals(t.getHorarioDia()[i][j], horario[i][j]);
 
 			}
 		}
@@ -66,6 +66,7 @@ public class PackageLockerTest {
 	/*
 	 * Pruebas no válidas del generador con opción de operatividad.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoIdNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -76,6 +77,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker(null, gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoGpsNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -85,6 +87,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", null, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHorarioNull() {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
@@ -95,8 +98,9 @@ public class PackageLockerTest {
 	 * Pruebas no válida del generador con opción de operatividad donde se analiza
 	 * el horario como un conjunto, por tanto se prueba en los extremos los erroes.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
-	public void testPackageLockerConOpcionOperativoHorarioOchoDias() {
+	public void testPackageLockerConOpcionOperativoOchoDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -106,6 +110,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoSeisDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -116,6 +121,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoPrimerDiaNull() {
 		LocalTime[][] horario = { null, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -126,6 +132,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -136,6 +143,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHoraAperturaPrimerDiaNull() {
 		LocalTime[][] horario = { { null, LocalTime.of(14, 0) }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -146,6 +154,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHoraCierrePrimerDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), null }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -156,6 +165,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHoraAperturaUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -166,6 +176,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoHoraCierreUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -176,6 +187,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoPrimerDiaTresHoras() {
 		LocalTime[][] horario = { { LocalTime.of(3, 30), LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -186,6 +198,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoPrimerDiaUnaHora() {
 		LocalTime[][] horario = { { LocalTime.of(14, 0) }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -196,6 +209,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoUltimoDiaTresHoras() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -207,6 +221,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoUltimoDiaUnaHora() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -217,6 +232,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoPrimerDiaHorasMalIntroducidas() {
 		LocalTime[][] horario = { { LocalTime.of(23, 0), LocalTime.of(14, 0) },
@@ -227,6 +243,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoUltimoDiaHorasMalIntroducidas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -238,9 +255,10 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no váidas del generador con opción de operativiad respecto al número
+	 * Pruebas no válidas del generador con opción de operativiad respecto al número
 	 * de Taquillas.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoTaquillasNegativas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -252,6 +270,7 @@ public class PackageLockerTest {
 
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerConOpcionOperativoTaquillasCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -266,6 +285,7 @@ public class PackageLockerTest {
 	/*
 	 * Pruebas no válidas del generador con taquillero operativo.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteIdNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -276,6 +296,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker(null, gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteGpsNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -285,6 +306,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", null, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHorarioNull() {
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
@@ -295,8 +317,9 @@ public class PackageLockerTest {
 	 * Pruebas no válida del generador del taquillero operativo donde se analiza el
 	 * horario como un conjunto, por tanto se prueba en los extremos los erroes.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
-	public void testPackageLockerOperativoDirectamenteHorarioOchoDias() {
+	public void testPackageLockerOperativoDirectamenteOchoDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -306,6 +329,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteSeisDias() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -316,6 +340,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamentePrimerDiaNull() {
 		LocalTime[][] horario = { null, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -326,6 +351,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -336,6 +362,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHoraAperturaPrimerDiaNull() {
 		LocalTime[][] horario = { { null, LocalTime.of(14, 0) }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -346,6 +373,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHoraCierrePrimerDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), null }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -356,6 +384,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHoraAperturaUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -366,6 +395,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteHoraCierreUltimoDiaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -376,6 +406,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamentePrimerDiaTresHoras() {
 		LocalTime[][] horario = { { LocalTime.of(3, 30), LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -386,6 +417,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamentePrimerDiaUnaHora() {
 		LocalTime[][] horario = { { LocalTime.of(14, 0) }, { LocalTime.of(7, 15), LocalTime.of(20, 20) },
@@ -396,6 +428,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteUltimoDiaTresHoras() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -407,6 +440,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteUltimoDiaUnaHora() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -417,6 +451,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamentePrimerDiaHorasMalIntroducidas() {
 		LocalTime[][] horario = { { LocalTime.of(23, 0), LocalTime.of(14, 0) },
@@ -427,6 +462,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteUltimoDiaHorasMalIntroducidas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -441,6 +477,7 @@ public class PackageLockerTest {
 	 * Pruebas no váidas del generador de taquillero operativo respecto al número de
 	 * Taquillas.
 	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteTaquillasNegativas() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -452,6 +489,7 @@ public class PackageLockerTest {
 
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageLockerOperativoDirectamenteTaquillasCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -751,7 +789,8 @@ public class PackageLockerTest {
 		assertEquals(t.sacaPaquete(1, LocalDate.now().plusDays(7)).getId(), "0000000011");
 
 	}
-	@Test( expected = IllegalStateException.class)
+
+	@Test(expected = IllegalStateException.class)
 	public void testSacaPaqueteTaquilleroFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
@@ -764,6 +803,7 @@ public class PackageLockerTest {
 		assertEquals(t.sacaPaquete(0, LocalDate.now().plusDays(7)).getId(), "0000000000");
 
 	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSacaPaqueteMenorCero() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -804,6 +844,7 @@ public class PackageLockerTest {
 		t.sacaPaquete(0, LocalDate.now().plusDays(7));
 
 	}
+
 	@Test(expected = IllegalArgumentException.class)
 	public void testSacaPaqueteFechaNull() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -831,6 +872,7 @@ public class PackageLockerTest {
 		t.sacaPaquete(0, LocalDate.now().plusDays(8));
 
 	}
+
 	/*
 	 * Pruebas del método devuelvePaquete().
 	 */

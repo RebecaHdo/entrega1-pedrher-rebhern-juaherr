@@ -60,13 +60,7 @@ public class PackageLocker {
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 */
 	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
-		compruebaGenerador(id, ubicacion, horario, numeroTaquillas);
-		this.id = id;
-		this.ubicacion = ubicacion;
-		this.horario = horario;
-		this.numeroTaquillas = numeroTaquillas;
-		this.operativo = true;
-		this.taquillas = new Package[numeroTaquillas];
+		this(id,ubicacion,horario,numeroTaquillas,true);
 	}
 
 	// Comprueba que los argumentos dados para la inicialización del taquillero sean
@@ -111,8 +105,11 @@ public class PackageLocker {
 	private void setOcupadas(int numero) {
 		ocupadas = numero;
 	}
-
-	private Package[] getTaquillas() {
+	/**
+	 * 	Devuelve las taquillas con su contenido (si no hay paquete es null)
+	 * @return las taquillas con su contenido (si no hay paquete es null)
+	 */
+	public Package[] getTaquillas() {
 		return taquillas;
 	}
 
@@ -142,8 +139,8 @@ public class PackageLocker {
 	 * @param dia día de la semana del que se quiere saber el horario.
 	 * @return horario horas de apertura y cierre del día indicado.
 	 */
-	public LocalTime[] getHorarioDia(int dia) {
-		return horario[dia];
+	public LocalTime[][] getHorarioDia() {
+		return horario;
 	}
 
 	/**

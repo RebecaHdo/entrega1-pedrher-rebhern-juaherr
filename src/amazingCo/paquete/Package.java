@@ -3,7 +3,7 @@ package amazingCo.paquete;
 import java.time.LocalDate;
 
 /**
- * Permite la creación de paquetes, controlar y conocer el estado del paquete,
+ * Permite crear paquetes, controlar y conocer el estado del paquete,
  * ya sea si este ha sido devuelto o recogido y saber su fecha límite de
  * recogida.
  * 
@@ -41,8 +41,8 @@ public class Package {
 		return estado;
 	}
 
-	private void setEstado(int cambio) {
-		estado = cambio;
+	private void setEstado(int nuevoEstado) {
+		estado = nuevoEstado;
 	}
 
 	/**
@@ -75,6 +75,8 @@ public class Package {
 			throw new IllegalArgumentException("La id no tiene no tiene 10 dígitos");
 		}
 		int acumulado = 0;
+		// Transforma cada dígito de char a int para después operar con ellos.
+		// Se resta el código ASCII del número 0 para pasar de ASCII a decimal.
 		for (int i = 0; i < 9; i++) {
 			int digito = id.charAt(i) - '0';
 

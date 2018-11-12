@@ -6,7 +6,9 @@ import org.junit.Test;
 import java.time.LocalDate;
 
 public class PackageTest {
-
+	/*
+	 * Pruebas generador tratado como conjunto, por lo que probamos los extremos.
+	 */
 	@Test
 	public void testPackageDiezDigitos0() {
 		Package p = new Package("0000000000");
@@ -24,77 +26,55 @@ public class PackageTest {
 		LocalDate fecha = LocalDate.now().plusDays(7);
 		assertEquals(fecha, p.getFecha());
 	}
-	
+
+	/*
+	 * Pruebas no válidas del generador.
+	 */
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageNull() {
 		Package p = new Package(null);
 	}
-	
+
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageNueveDigitos() {
 		Package p = new Package("012345678");
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageOnceDigitos() {
 		Package p = new Package("01234567890");
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageIncumpleLaCondicion() {
 		Package p = new Package("1111111111");
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackagePrimeroNoEsDigito() {
 		Package p = new Package("a111111111");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageSegundoNoEsDigito() {
-		Package p = new Package("1a11111111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageTerceroNoEsDigito() {
-		Package p = new Package("11a1111111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageCuartoNoEsDigito() {
-		Package p = new Package("111a111111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageQuintoNoEsDigito() {
-		Package p = new Package("1111a11111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageSextoNoEsDigito() {
-		Package p = new Package("11111a1111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageSeptimoNoEsDigito() {
-		Package p = new Package("111111a111");
-	}
-
-	@Test(expected = IllegalArgumentException.class)
-	public void testPackageOctavoNoEsDigito() {
-		Package p = new Package("1111111a11");
-	}
-
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageNovenoNoEsDigito() {
 		Package p = new Package("11111111a1");
 	}
 
+	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
 	public void testPackageDecimoNoEsDigito() {
 		Package p = new Package("111111111a");
 	}
 
+	/*
+	 * Pruebas del método getFecha().
+	 */
 	@Test
 	public void testGetFecha() {
 		Package p = new Package("0000000000");
@@ -103,6 +83,9 @@ public class PackageTest {
 		assertEquals(fecha, p.getFecha());
 	}
 
+	/*
+	 * Pruebas del método getId().
+	 */
 	@Test
 	public void testGetId() {
 		Package p = new Package("0000000000");
@@ -110,11 +93,14 @@ public class PackageTest {
 		assertEquals("0000000000", p.getId());
 	}
 
+	/*
+	 * Pruebas del método fechaEnPlazo().
+	 */
 	@Test
 	public void testFechaEnPlazoEnPlazo() {
 		Package p = new Package("0000000000");
 		LocalDate fecha = LocalDate.now().plusDays(7);
-		assertTrue(p.getFecha() + "<" + fecha,p.fechaEnPlazo(fecha));
+		assertTrue(p.getFecha() + "<" + fecha, p.fechaEnPlazo(fecha));
 
 	}
 
@@ -132,6 +118,9 @@ public class PackageTest {
 		p.fechaEnPlazo(null);
 	}
 
+	/*
+	 * Pruebas del método Recogido().
+	 */
 	@Test
 	public void testRecogidoValido() {
 		Package p = new Package("0000000000");
@@ -153,6 +142,9 @@ public class PackageTest {
 		p.recogido();
 	}
 
+	/*
+	 * Pruebas del método devuelto().
+	 */
 	@Test
 	public void testDevueltoValido() {
 		Package p = new Package("0000000000");

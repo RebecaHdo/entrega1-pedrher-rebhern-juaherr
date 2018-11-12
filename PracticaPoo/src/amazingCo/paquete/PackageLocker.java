@@ -10,9 +10,9 @@ import java.time.LocalDate;
  * @author rebhern
  * @author pedrher
  * 
- *         Permite la creación de taquilleros con su id, horario, ubicación y
- *         número de taquillas, también controlar a los paquetes que tiene dicho
- *         taquillero. Los numeros de las taquillas comienzan en 0.
+ *         Permite la creación de taquilleros con su id, horario, ubicación,
+ *         número de taquillas y operatividad y controlar los paquetes que tiene
+ *         dicho taquillero. Los números de las taquillas comienzan en 0.
  */
 public class PackageLocker {
 
@@ -32,8 +32,7 @@ public class PackageLocker {
 	 * @param ubicacion       ubicación de la taquilla.
 	 * @param horario         tabla en la que se representa el día de la semana y la
 	 *                        hora de apertura y cierre de cada día. Esquema:
-	 *                        [[LocalTime (apertura),Localtime
-	 *                        (cierre)],...,[LocalTime,Localtime]]
+	 *                        [[LocalTime(apertura),Localtime(cierre)],...,[LocalTime,Localtime]]
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 * @param operativo       indica si el taquillero está operativo desde el
 	 *                        momento creado o no.
@@ -57,8 +56,7 @@ public class PackageLocker {
 	 * @param ubicacion       ubicación de la taquilla.
 	 * @param horario         tabla en la que se representa el día de la semana y la
 	 *                        hora de apertura y cierre de cada día. Esquema:
-	 *                        [[LocalTime (apertura),Localtime
-	 *                        (cierre)],...,[LocalTime,Localtime]]
+	 *                        [[LocalTime(apertura),Localtime(cierre)],...,[LocalTime,Localtime]]
 	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 */
 	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
@@ -71,13 +69,16 @@ public class PackageLocker {
 		this.taquillas = new Package[numeroTaquillas];
 	}
 
+	// Comprueba que los argumentos dados para la inicialización del taquillero sean
+	// válidos.
 	private void compruebaGenerador(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
 		if (id == null || ubicacion == null || horario == null) {
 			throw new IllegalArgumentException("Uno de los argumentos es null.");
 		}
-
+		// Comprobación de las especificaciones del horario. Esquema:
+		// [[LocalTime(apertura),Localtime(cierre)],...,[LocalTime,Localtime]]
 		if (horario.length != 7) {
-			throw new IllegalArgumentException("Son necesarios los horarios de los 7 dias.");
+			throw new IllegalArgumentException("Son necesarios los horarios de los 7 dias de la semana.");
 		}
 		for (int i = 0; i < 7; i++) {
 			if (horario[i] == null) {
@@ -89,19 +90,18 @@ public class PackageLocker {
 			}
 			for (int j = 0; j < 2; j++) {
 				if (horario[i][j] == null) {
-					throw new IllegalArgumentException("Al menos uno de los horaios no existe");
+					throw new IllegalArgumentException("Al menos una de las horas es null.");
 				}
+			}
+			if (horario[i][0].isAfter(horario[i][1])) {
+				throw new IllegalArgumentException("Horas mal introducidas. Debe ser Apertura → Cierre");
 			}
 		}
 		if (numeroTaquillas < 1) {
 			throw new IllegalArgumentException("Número de taquillas no positivo.");
 
 		}
-		for (int i = 0; i < 7; i++) {
-			if (horario[i][0].isAfter(horario[i][1])) {
-				throw new IllegalArgumentException("Horas mal introducidas. Debe ser Apertura → Cierre");
-			}
-		}
+
 	}
 
 	private void setOperativo(boolean op) {
@@ -139,8 +139,8 @@ public class PackageLocker {
 	/**
 	 * Devuleve la hora de apertura o cierre de la taquilla de un día especificado.
 	 * 
-	 * @param dia dia de la semana que se quiere saber el horario.
-	 * @return
+	 * @param dia día de la semana del que se quiere saber el horario.
+	 * @return horario horas de apertura y cierre del día indicado.
 	 */
 	public LocalTime[] getHorarioDia(int dia) {
 		return horario[dia];
@@ -149,7 +149,7 @@ public class PackageLocker {
 	/**
 	 * Devuelve true si el taquillero está operativo y false en caso contrario.
 	 * 
-	 * @return boolean true si el taquillero está operativo y false si no lo está.
+	 * @return true si el taquillero está operativo y false si no lo está.
 	 */
 	public boolean getOperativo() {
 		return operativo;
@@ -175,9 +175,9 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Devuelve el número de taquillas vacias que tiene el taquillero.
+	 * Devuelve el número de taquillas vacías que tiene el taquillero.
 	 * 
-	 * @return número de taquillas vacias.
+	 * @return número de taquillas vacías.
 	 */
 	public int getNumeroTaquillasVacias() {
 		return getNumeroTaquillas() - getNumeroTaquillasLlenas();
@@ -186,19 +186,19 @@ public class PackageLocker {
 	/**
 	 * Devuelve la ubicación geográfica del taquillero.
 	 * 
-	 * @return la ubicación geográfica.
+	 * @return ubicación geográfica.
 	 */
 	public GPSCoordinate getUbicacion() {
 		return ubicacion;
 	}
 
 	/**
-	 * Devuelve el número de taquilla del paquete deseado.
+	 * Devuelve el número de taquilla en el que se encuentra el paquete indicado.
 	 * 
 	 * @param idPaquete id del paquete.
 	 * @return Número de la taquilla en la que está el paquete.
 	 * @throws IllegalArgumentException si la id es null o si no existe el paquete
-	 *                                  indicado en el taquillero indicado.
+	 *                                  en el taquillero indicado.
 	 */
 	public int locaclizaPaquete(String idPaquete) {
 		if (idPaquete == null) {
@@ -225,30 +225,32 @@ public class PackageLocker {
 	/**
 	 * Asigna el paquete dado a una taquilla.
 	 * 
-	 * @param p el paquete a guardar.
-	 * @throws IllegalArgumenException Si el paquete es null.
-	 * @throws IllegalStateException   Si el taquillero está lleno o si hay otro
-	 *                                 paquete con la misma id.
+	 * @param paquete paquete a guardar.
+	 * @throws IllegalArgumentException Si el paquete es null.
+	 * @throws IllegalStateException    Si el taquillero está lleno o si hay otro
+	 *                                  paquete con la misma id.
 	 */
-	public void asignaPaquete(Package p) {
+	public void asignaPaquete(Package paquete) {
 
-		if (p == null) {
+		if (paquete == null) {
 			throw new IllegalArgumentException("El paquete es null.");
 		}
 		if (getNumeroTaquillasLlenas() == getNumeroTaquillas()) {
 			throw new IllegalStateException("Taquillero lleno.");
 		}
+		// comprueba que no haya un paquete con la misma id en el taquillero.
 		for (int i = 0; i < getNumeroTaquillas(); i++) {
 			if (getTaquillas()[i] != null) {
-				if (p.getId() == getTaquillas()[i].getId()) {
+				if (paquete.getId() == getTaquillas()[i].getId()) {
 					throw new IllegalStateException("Hay otro paquete con la misma id");
 				}
 			}
 		}
+		// guarda el paquete en la primera taquilla libre.
 		int i = 0;
 		while (i < getTaquillas().length) {
 			if (getTaquillas()[i] == null) {
-				getTaquillas()[i] = p;
+				getTaquillas()[i] = paquete;
 				i = getTaquillas().length;
 			} else {
 				i++;
@@ -261,10 +263,11 @@ public class PackageLocker {
 	/**
 	 * Saca el paquete de la taquilla dada.
 	 * 
-	 * @param idTaquilla Número de la taquilla de la que sacar el paquete.
-	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
-	 * @throws IllegalStateException    Si la taquilla está vacia o si la fecha de
+	 * @param idTaquilla id de la taquilla de la que sacar el paquete.
+	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
+	 * @throws IllegalStateException    si la taquilla está vacia o si la fecha de
 	 *                                  entrega ha sido superada.
+	 * @return paquete que estaba en la taquilla indicada.
 	 */
 	public Package sacaPaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
@@ -273,6 +276,9 @@ public class PackageLocker {
 		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
+			// TODO arreglamos esto o lo dejamos así?
+			// la batería de pruebas no entra en este else if porque el porque el día de
+			// creaciónd el paquete y de recogid siempre es el msimo
 		} else if (!getTaquillas()[idTaquilla].fechaEnPlazo(LocalDate.now())) {
 			throw new IllegalStateException("La fecha de entrega ha sido superada.");
 
@@ -285,11 +291,12 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Devuelve el paquete a fabrica de la taquilla dada.
+	 * Devuelve el paquete al almacén de la taquilla dada.
 	 * 
-	 * @param idTaquilla Número de la taquilla de la que se devuelve el paquete.
-	 * @throws IllegalArgumentException si el numero de taquilla es erróneo.
+	 * @param idTaquilla id de la taquilla de la que se devuelve el paquete.
+	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia.
+	 * @return paquete que estaba en la taquilla indicada.
 	 */
 	public Package devuelvePaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {

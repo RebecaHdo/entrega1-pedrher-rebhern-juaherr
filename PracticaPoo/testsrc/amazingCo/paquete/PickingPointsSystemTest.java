@@ -328,7 +328,17 @@ public class PickingPointsSystemTest {
 
 	@Test
 	public void testGetPackageLockerEnZona() {
-		fail("Not yet implemented");
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(0, 0);
+		GPSCoordinate gps2 = new GPSCoordinate(0, 1);
+
+		PickingPointsSystem pps = new PickingPointsSystem();
+		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
+		assertEquals(pps.getPackageLockerEnZona(gps2 , 1)[0].getId(), "0000000000");
+		assertEquals(pps.getPackageLockerTaquillasVacias().length, 1);
 	}
 
 	@Test
@@ -359,6 +369,7 @@ public class PickingPointsSystemTest {
 		pps.getPackageLocker("0000000000").asignaPaquete(p);
 		assertEquals(pps.getPackageLockerTaquillasVacias().length, 0);
 	}
+
 	@Test(expected = IllegalStateException.class)
 	public void testGetPackageLockerTaquillasVaciasArrayVacio() {
 		PickingPointsSystem pps = new PickingPointsSystem();
@@ -393,7 +404,7 @@ public class PickingPointsSystemTest {
 		pps.getPackageLocker("0000000000").asignaPaquete(p);
 		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 0);
 	}
-	
+
 	@Test
 	public void testGetPackageLockerTaquillasVaciasOperativasNoDevolverNingunoFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -419,9 +430,10 @@ public class PickingPointsSystemTest {
 		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
 		Package p = new Package("0000000000");
 		pps.getPackageLocker("0000000000").asignaPaquete(p);
-		
+
 		assertEquals(pps.getPackageLockerTaquillasVaciasOperativos().length, 0);
 	}
+
 	@Test(expected = IllegalStateException.class)
 	public void testGetPackageLockerTaquillasVaciasOperativoArrayVacio() {
 		PickingPointsSystem pps = new PickingPointsSystem();

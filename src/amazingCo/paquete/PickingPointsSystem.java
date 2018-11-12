@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
 /**
+ * Administra los taquilleros, pudiendo añiadir o eliminarlos, ver los
+ * operativos y fuera de servicio, encontrar los que hay en un radio dado y ver
+ * cuales tienen taquillas vacias.
  * 
  * @author juaherr
  * @author rebhern
  * @author pedrher
  * 
- *         Administra los taquilleros, pudiendo añiadir o eliminarlos, ver los
- *         operativos y fuera de servicio, encontrar los que hay en un radio
- *         dado y ver cuales tienen taquillas vacias.
  */
 public class PickingPointsSystem {
 
@@ -34,19 +34,15 @@ public class PickingPointsSystem {
 	 * Crear y guarda el taquillero con la id, ubicación, horario semanal, número de
 	 * taquillas y operatividad dados.
 	 * 
-	 * @param id
-	 *            id de la taquilla.
-	 * @param ubicacion
-	 *            ubicación de la taquilla.
-	 * @param horario
-	 *            tabla en la que se representa el día de la semana y la hora de
-	 *            apertura y cierre de cada día. Esquema: [[LocalTime
-	 *            (apertura),Localtime (cierre)],...,[LocalTime,Localtime]]
-	 * @param numeroTaquillas
-	 *            número de taquillas que tiene el taquillero.
-	 * @param operativo
-	 *            indica si el taquillero está operativo desde el momento creado o
-	 *            no.
+	 * @param id              id de la taquilla.
+	 * @param ubicacion       ubicación de la taquilla.
+	 * @param horario         tabla en la que se representa el día de la semana y la
+	 *                        hora de apertura y cierre de cada día. Esquema:
+	 *                        [[LocalTime (apertura),Localtime
+	 *                        (cierre)],...,[LocalTime,Localtime]]
+	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
+	 * @param operativo       indica si el taquillero está operativo desde el
+	 *                        momento creado o no.
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
@@ -68,16 +64,13 @@ public class PickingPointsSystem {
 	 * Crear y guarda el taquillero operativo con la id, ubicación, horario semanal
 	 * y número de taquillas.
 	 * 
-	 * @param id
-	 *            id de la taquilla.
-	 * @param ubicacion
-	 *            ubicación de la taquilla.
-	 * @param horario
-	 *            tabla en la que se representa el día de la semana y la hora de
-	 *            apertura y cierre de cada día. Esquema: [[LocalTime
-	 *            (apertura),Localtime (cierre)],...,[LocalTime,Localtime]]
-	 * @param numeroTaquillas
-	 *            número de taquillas que tiene el taquillero.
+	 * @param id              id de la taquilla.
+	 * @param ubicacion       ubicación de la taquilla.
+	 * @param horario         tabla en la que se representa el día de la semana y la
+	 *                        hora de apertura y cierre de cada día. Esquema:
+	 *                        [[LocalTime (apertura),Localtime
+	 *                        (cierre)],...,[LocalTime,Localtime]]
+	 * @param numeroTaquillas número de taquillas que tiene el taquillero.
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
 		if (id == null || ubicacion == null || horario == null) {
@@ -96,8 +89,7 @@ public class PickingPointsSystem {
 	/**
 	 * Elimina un PackageLocker por id.
 	 * 
-	 * @param id
-	 *            del PackageLocker a borrar.
+	 * @param id del PackageLocker a borrar.
 	 */
 	public void eliminarPackageLocker(String id) {
 		if (getListaTaquilleros().size() == 0) {
@@ -137,8 +129,7 @@ public class PickingPointsSystem {
 	/**
 	 * Devuelve un array de todos los PackageLockers.
 	 * 
-	 * @param id
-	 *            id del packagelocker.
+	 * @param id id del packagelocker.
 	 * @return el packagelocker con la id dada.
 	 * 
 	 */
@@ -221,15 +212,13 @@ public class PickingPointsSystem {
 	 * Devuelve un array de PackagerLockers ordenados por orden de cercania que
 	 * estén dentro del randio dado a la ubicación dada.
 	 * 
-	 * @param ubicacion
-	 *            zona desde la que se genera el radio.
-	 * @param radio
-	 *            distancia desde la ubicación que se quiere abarcar.
+	 * @param ubicacion zona desde la que se genera el radio.
+	 * @param radio     distancia desde la ubicación que se quiere abarcar.
 	 * @return vector todos los taquilleros que están a un radio indicado desde una
 	 *         ubicación indicada.
 	 */
 	public PackageLocker[] getPackageLockerEnZona(GPSCoordinate ubicacion, double radio) {
-		if(ubicacion == null) {
+		if (ubicacion == null) {
 			throw new IllegalArgumentException("La ubicación es nula.");
 		}
 		if (getListaTaquilleros().size() == 0) {

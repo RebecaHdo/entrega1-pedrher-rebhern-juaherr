@@ -5,14 +5,14 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 
 /**
+ * Permite la creación de taquilleros con su id, horario, ubicación, número de
+ * taquillas y operatividad y controlar los paquetes que tiene dicho taquillero.
+ * Los números de las taquillas comienzan en 0.
  * 
  * @author juaherr
  * @author rebhern
  * @author pedrher
  * 
- *         Permite la creación de taquilleros con su id, horario, ubicación,
- *         número de taquillas y operatividad y controlar los paquetes que tiene
- *         dicho taquillero. Los números de las taquillas comienzan en 0.
  */
 public class PackageLocker {
 
@@ -263,7 +263,7 @@ public class PackageLocker {
 	/**
 	 * Saca el paquete de la taquilla dada.
 	 * 
-	 * @param idTaquilla id de la taquilla de la que sacar el paquete.
+	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
 	 * @param fechaSacada fecha en la que se saca el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia o si la fecha de
@@ -271,7 +271,7 @@ public class PackageLocker {
 	 * @return paquete que estaba en la taquilla indicada.
 	 */
 	public Package sacaPaquete(int idTaquilla, LocalDate fechaSacada) {
-		if(!getOperativo()) {
+		if (!getOperativo()) {
 			throw new IllegalStateException("El taquillero no está operativo.");
 
 		}
@@ -281,7 +281,7 @@ public class PackageLocker {
 		}
 		if (fechaSacada == null) {
 			throw new IllegalArgumentException("La fecha es nula.");
-		
+
 		}
 		if (getTaquillas()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
@@ -296,7 +296,7 @@ public class PackageLocker {
 		getTaquillas()[idTaquilla] = null;
 		return paquete;
 	}
-	
+
 	/**
 	 * Devuelve el paquete al almacén de la taquilla dada.
 	 * 

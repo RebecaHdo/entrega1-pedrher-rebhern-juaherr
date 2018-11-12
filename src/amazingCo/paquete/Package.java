@@ -3,14 +3,15 @@ package amazingCo.paquete;
 import java.time.LocalDate;
 
 /**
+ * Permite la creación de paquetes, controlar y conocer el estado del paquete,
+ * ya sea si este ha sido devuelto o recogido y saber su fecha límite de
+ * recogida.
  * 
  * @author juaherr
  * @author rebhern
  * @author pedrher
  * 
- *         Permite la creación de paquetes, controlar y conocer el estado del
- *         paquete, ya sea si este ha sido devuelto o recogido y saber su fecha
- *         límite de recogida.
+ * 
  */
 public class Package {
 
@@ -60,10 +61,11 @@ public class Package {
 	 *           caracteres, de los cuales los primeros nueve son dígitos y el
 	 *           décimo es un dígito resultante del resto de la división entre 10 de
 	 *           la suma de los 9 primeros."
-	 * @throws IllegalArgumentException si la id es null o si la longitud de la id
-	 *                                  es distinta de 10 o si los caracteres de la
-	 *                                  id son distintos de [0,9] o si no se
-	 *                                  verifica el dígito de condición.
+	 * @throws IllegalArgumentException si la id es null.
+	 * @throws IllegalArgumentException si la longitud de la id es distinta de 10 o
+	 *                                  si los caracteres de la id son distintos de
+	 *                                  [0,9].
+	 * @throws IllegalArgumentException si no se verifica el dígito de condición.
 	 */
 	public Package(String id) {
 		if (id == null) {
@@ -76,7 +78,7 @@ public class Package {
 		for (int i = 0; i < 9; i++) {
 			int digito = id.charAt(i) - '0';
 
-			//Una de las ramas es inaccesible ya que 10 < digito < 1 es imposible. 
+			// Una de las ramas es inaccesible ya que 10 < digito < 1 es imposible.
 			if (digito < 10 && digito > -1) {
 				acumulado += (digito);
 			} else {
@@ -110,9 +112,8 @@ public class Package {
 	/**
 	 * Cambia el estado del paquete a recogido en caso de que sea posible.
 	 * 
-	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
-	 *                               pesar de que su estado habia sido cambiado a
-	 *                               recogido.
+	 * @throws IllegalStateException si el paquete se intenta recoger pero su estado
+	 *                               es 1 (recogido) o 2 (devuelto).
 	 */
 	public void recogido() {
 		if (getEstado() == 0) {
@@ -128,9 +129,8 @@ public class Package {
 	/**
 	 * Cambia el estado del paquete a devuelto en caso de que sea posible.
 	 * 
-	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
-	 *                               pesar de que su estado habia sido cambiado a
-	 *                               devuelto.
+	 * @throws IllegalStateException si el paquete se intenta devolver pero su
+	 *                               estado es 1 (recogido) o 2 (devuelto).
 	 */
 	public void devuelto() {
 		if (getEstado() == 0) {

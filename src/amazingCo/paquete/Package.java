@@ -8,13 +8,13 @@ import java.time.LocalDate;
  * @author rebhern
  * @author pedrher
  * 
- *         Permite la creación de paquetes y controlar el estado del paquete
- *         ademas de saber su fecha límite de recogida.
+ *         Permite la creación de paquetes, controlar y conocer el estado del
+ *         paquete, ya sea si este ha sido devuelto o recogido y saber su fecha
+ *         límite de recogida.
  */
 public class Package {
 
 	private static final int DIAS_MAXIMO = 7;
-	//TODO lista estatica de ids
 	private String id;
 	private LocalDate fechaLimite;
 	/*
@@ -54,11 +54,11 @@ public class Package {
 	}
 
 	/**
-	 * inicializa el paquete con la id y fecha límite a partir de la actual.
+	 * Inicializa el paquete con la id y fecha límite a partir de la fecha actual.
 	 * 
-	 * @param id id del paquete siguiendo las restriciones de id "Debe tener diez
+	 * @param id id del paquete siguiendo las restriciones de id: "Debe tener diez
 	 *           caracteres, de los cuales los primeros nueve son dígitos y el
-	 *           décimo es un dígito resultante delresto de la división entre 10 de
+	 *           décimo es un dígito resultante del resto de la división entre 10 de
 	 *           la suma de los 9 primeros."
 	 * @throws IllegalArgumentException si la id es null o si la longitud de la id
 	 *                                  es distinta de 10 o si los caracteres de la
@@ -76,7 +76,7 @@ public class Package {
 		for (int i = 0; i < 9; i++) {
 			int digito = id.charAt(i) - '0';
 
-			if (digito < 10 && digito > -1) {
+			if (digito < 10 && digito > -1) { 
 				acumulado += (digito);
 			} else {
 				throw new IllegalArgumentException("La id contiene caracteres distintos de [0,9]");
@@ -87,16 +87,16 @@ public class Package {
 			fechaLimite = LocalDate.now();
 			fechaLimite = fechaLimite.plusDays(DIAS_MAXIMO);
 		} else {
-			throw new IllegalArgumentException("No se verifica el dígito de condición.");
+			throw new IllegalArgumentException("No se verifica el dígito de condición."); 
 		}
 	}
 
 	/**
-	 * Dada una fecha indica si la fecha de fin de almacenaje se ha pasado.
+	 * Dada una fecha indica si la fecha de fin de almacenaje ha caducado.
 	 * 
-	 * @param fecha fecha con la que comprobar.
-	 * @return true si se ha pasado y false si no.
-	 * @throws IllegalArgumentException si la fecha es null
+	 * @param fecha fecha con la que se desea comprobar.
+	 * @return true si se ha pasado el plazo y false si no.
+	 * @throws IllegalArgumentException si la fecha es null.
 	 */
 	public boolean fechaEnPlazo(LocalDate fecha) {
 		if (fecha == null) {
@@ -107,7 +107,7 @@ public class Package {
 	}
 
 	/**
-	 * Cambia el estado del paquete a recogido.
+	 * Cambia el estado del paquete a recogido en caso de que sea posible.
 	 * 
 	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
 	 *                               pesar de que su estado habia sido cambiado a
@@ -125,7 +125,7 @@ public class Package {
 	}
 
 	/**
-	 * Cambia el estado del paquete a devuelto.
+	 * Cambia el estado del paquete a devuelto en caso de que sea posible.
 	 * 
 	 * @throws IllegalStateException si el paquete se intenta recoger o devolver a
 	 *                               pesar de que su estado habia sido cambiado a

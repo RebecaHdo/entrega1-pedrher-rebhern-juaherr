@@ -227,7 +227,7 @@ public class PackageLocker {
 	 * @throws IllegalStateException    Si el taquillero está lleno o si hay otro
 	 *                                  paquete con la misma id.
 	 */
-	public void asignaPaquete(Package paquete) {
+	public void setPaquete(Package paquete) {
 
 		if (paquete == null) {
 			throw new IllegalArgumentException("El paquete es null.");
@@ -256,18 +256,63 @@ public class PackageLocker {
 		setOcupadas(getNumeroTaquillasLlenas() + 1);
 
 	}
-
 	/**
 	 * Saca el paquete de la taquilla dada.
 	 * 
 	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
 	 * @param fechaSacada fecha en la que se saca el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
-	 * @throws IllegalStateException    si la taquilla está vacia o si la fecha de
-	 *                                  entrega ha sido superada.
+	 * @throws IllegalStateException    si la taquilla está vacia.
 	 * @return paquete que estaba en la taquilla indicada.
 	 */
-	public Package sacaPaquete(int idTaquilla, LocalDate fechaSacada) {
+	public Package getPaquete(int idTaquilla) {
+
+		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
+			throw new IllegalArgumentException(
+					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
+		}
+
+		if (getTaquillas()[idTaquilla] == null) {
+			throw new IllegalStateException("Esta taquilla está vacía.");
+		} 
+		
+		Package paquete = getTaquillas()[idTaquilla];
+		return paquete;
+	}
+	/**
+	 * Borra el paquete de la taquilla dada.
+	 * 
+	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
+	 * @param fechaSacada fecha en la que se saca el paquete.
+	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
+	 * @throws IllegalStateException    si la taquilla está vacia.
+	 */
+	public void borraPaquete(int idTaquilla) {
+
+		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
+			throw new IllegalArgumentException(
+					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
+		}
+
+		if (getTaquillas()[idTaquilla] == null) {
+			throw new IllegalStateException("Esta taquilla está vacía.");
+		} 
+		getTaquillas()[idTaquilla] = null;
+		setOcupadas(getNumeroTaquillasLlenas() - 1);
+
+	}
+	
+	
+	/**
+	 * Modifica el estado del paquete a sacado de la taquilla dada.
+	 * 
+	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
+	 * @param fechaSacada fecha en la que se saca el paquete.
+	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
+	 * @throws IllegalStateException    si la taquilla está vacia o si la fecha de
+	 *                                  entrega ha sido superada.
+	 */
+	public void sacaPaquete(int idTaquilla, LocalDate fechaSacada) {
 		if (!getOperativo()) {
 			throw new IllegalStateException("El taquillero no está operativo.");
 
@@ -288,21 +333,16 @@ public class PackageLocker {
 
 		}
 		getTaquillas()[idTaquilla].recogido();
-		setOcupadas(getNumeroTaquillasLlenas() - 1);
-		Package paquete = getTaquillas()[idTaquilla];
-		getTaquillas()[idTaquilla] = null;
-		return paquete;
 	}
 
 	/**
-	 * Devuelve el paquete al almacén de la taquilla dada.
+	 * Modifica el estado del paquete a devuelto de la taquilla dada.
 	 * 
 	 * @param idTaquilla id de la taquilla de la que se devuelve el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia.
-	 * @return paquete que estaba en la taquilla indicada.
 	 */
-	public Package devuelvePaquete(int idTaquilla) {
+	public void devuelvePaquete(int idTaquilla) {
 		if (idTaquilla < 0 || idTaquilla > getNumeroTaquillas() - 1) {
 			throw new IllegalArgumentException(
 					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
@@ -311,10 +351,5 @@ public class PackageLocker {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}
 		getTaquillas()[idTaquilla].devuelto();
-		setOcupadas(getNumeroTaquillasLlenas() - 1);
-		Package paquete = getTaquillas()[idTaquilla];
-		getTaquillas()[idTaquilla] = null;
-		return paquete;
-
 	}
 }

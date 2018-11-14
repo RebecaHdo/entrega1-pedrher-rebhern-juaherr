@@ -904,7 +904,6 @@ public class PackageLockerTest {
 		t.borraPaquete(0);
 
 	}
-	//TODO
 	/*
 	 * Pruebas del método sacaPaquete().
 	 */
@@ -918,7 +917,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
-		t.sacaPaquete(0, LocalDate.now().plusDays(7));
+		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos()));
 		assertEquals(t.getPaquete(0).getEstado(), 1);
 
 	}
@@ -935,7 +934,7 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 2);
 		t.setPaquete(p);
 		t.setPaquete(p2);
-		t.sacaPaquete(1, LocalDate.now().plusDays(7));
+		t.sacaPaquete(1, LocalDate.now().plusDays(Package.getDiasMaximos()));
 		assertEquals(t.getPaquete(1).getEstado(), 1);
 		assertEquals(t.getPaquete(0).getEstado(), 0);
 	}
@@ -950,7 +949,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, false);
 		t.setPaquete(p);
-		t.sacaPaquete(0, LocalDate.now().plusDays(7));
+		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos()));
 
 	}
 
@@ -964,7 +963,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
-		t.sacaPaquete(-1, LocalDate.now().plusDays(7));
+		t.sacaPaquete(-1, LocalDate.now().plusDays(Package.getDiasMaximos()));
 
 	}
 
@@ -978,7 +977,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
-		t.sacaPaquete(1, LocalDate.now().plusDays(7));
+		t.sacaPaquete(1, LocalDate.now().plusDays(Package.getDiasMaximos()));
 
 	}
 
@@ -990,7 +989,7 @@ public class PackageLockerTest {
 				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
 		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
-		t.sacaPaquete(0, LocalDate.now().plusDays(7));
+		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos()));
 
 	}
 
@@ -1018,7 +1017,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
-		t.sacaPaquete(0, LocalDate.now().plusDays(8));
+		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos()+1));
 
 	}
 

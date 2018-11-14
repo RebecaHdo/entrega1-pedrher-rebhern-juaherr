@@ -89,7 +89,7 @@ public class PackageTest {
 	@Test
 	public void testGetFecha() {
 		Package p = new Package("0000000000");
-		LocalDate fecha = LocalDate.now().plusDays(7);
+		LocalDate fecha = LocalDate.now().plusDays(Package.getDiasMaximos());
 		assertEquals(fecha, p.getFecha());
 	}
 
@@ -108,7 +108,7 @@ public class PackageTest {
 	@Test
 	public void testFechaEnPlazoEnPlazo() {
 		Package p = new Package("0000000000");
-		LocalDate fecha = LocalDate.now().plusDays(7);
+		LocalDate fecha = LocalDate.now().plusDays(Package.getDiasMaximos());
 		assertTrue(p.getFecha() + "<" + fecha, p.fechaEnPlazo(fecha));
 
 	}
@@ -116,7 +116,7 @@ public class PackageTest {
 	@Test
 	public void testFechaEnPlazoPasada() {
 		Package p = new Package("0000000000");
-		LocalDate fecha = LocalDate.now().plusDays(8);
+		LocalDate fecha = LocalDate.now().plusDays(Package.getDiasMaximos()+1);
 		assertFalse(p.getFecha() + "<" + fecha, p.fechaEnPlazo(fecha));
 
 	}

@@ -71,14 +71,24 @@ public class PackageTest {
 	public void testPackageDecimoNoEsDigito() {
 		Package p = new Package("111111111a");
 	}
-
+	/*
+	 * Pruebas del método setDiasMaximos().
+	 */
+	@Test
+	public void testsetDiasMaximos() {
+		Package.setDiasMaximos(0);
+		assertEquals(Package.getDiasMaximos(), 0);
+	}
+	@Test( expected = IllegalArgumentException.class)
+	public void testsetDiasMaximosNegativo() {
+		Package.setDiasMaximos(-1);
+	}
 	/*
 	 * Pruebas del método getFecha().
 	 */
 	@Test
 	public void testGetFecha() {
 		Package p = new Package("0000000000");
-		assertNotNull(p);
 		LocalDate fecha = LocalDate.now().plusDays(7);
 		assertEquals(fecha, p.getFecha());
 	}
@@ -89,7 +99,6 @@ public class PackageTest {
 	@Test
 	public void testGetId() {
 		Package p = new Package("0000000000");
-		assertNotNull(p);
 		assertEquals("0000000000", p.getId());
 	}
 

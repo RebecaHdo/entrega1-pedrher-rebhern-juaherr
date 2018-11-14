@@ -283,7 +283,7 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no válidas del generador con taquillero operativo.
+	 * Pruebas no válidas del generador con PackageLocker operativo.
 	 */
 	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
@@ -314,7 +314,7 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no válida del generador del taquillero operativo donde se analiza el
+	 * Pruebas no válida del generador del PackageLocker operativo donde se analiza el
 	 * horario como un conjunto, por tanto se prueba en los extremos los erroes.
 	 */
 	@SuppressWarnings("unused")
@@ -474,7 +474,7 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no váidas del generador de taquillero operativo respecto al número de
+	 * Pruebas no váidas del generador de PackageLocker operativo respecto al número de
 	 * Taquillas.
 	 */
 	@SuppressWarnings("unused")
@@ -546,7 +546,7 @@ public class PackageLockerTest {
 	 * Pruebas del método getNumeroTaquillasLLenas().
 	 */
 	@Test
-	public void testGetNumeroTaquillasLlenasTaquilleroVacio() {
+	public void testGetNumeroTaquillasLlenasPackageLockerVacio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -557,7 +557,7 @@ public class PackageLockerTest {
 	}
 
 	@Test
-	public void testGetNumeroTaquillasLlenasTaquilleroDeUno() {
+	public void testGetNumeroTaquillasLlenasPackageLockerDeUno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -570,7 +570,7 @@ public class PackageLockerTest {
 	}
 
 	@Test
-	public void testGetNumeroTaquillasLlenasTaquilleroLleno() {
+	public void testGetNumeroTaquillasLlenasPackageLockerLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -589,7 +589,7 @@ public class PackageLockerTest {
 	 * Pruebas del método getNumeroTaquillasVacias().
 	 */
 	@Test
-	public void testGetNumeroTaquillasVaciasTaquilleroVacio() {
+	public void testGetNumeroTaquillasVaciasPackageLockerVacio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -600,7 +600,7 @@ public class PackageLockerTest {
 	}
 
 	@Test
-	public void testGetNumeroTaquillasVaciasTaquilleroUnoLleno() {
+	public void testGetNumeroTaquillasVaciasPackageLockerUnoLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -613,7 +613,7 @@ public class PackageLockerTest {
 	}
 
 	@Test
-	public void testGetNumeroTaquillasVaciasTaquilleroLleno() {
+	public void testGetNumeroTaquillasVaciasPackageLockerLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -728,7 +728,7 @@ public class PackageLockerTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testsetPaqueteTaquilleroLleno() {
+	public void testsetPaquetePackageLockerLleno() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
@@ -941,7 +941,7 @@ public class PackageLockerTest {
 	}
 
 	@Test(expected = IllegalStateException.class)
-	public void testSacaPaqueteTaquilleroFueraDeServicio() {
+	public void testSacaPaquetePackageLockerFueraDeServicio() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
 				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },

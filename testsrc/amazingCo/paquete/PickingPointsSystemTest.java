@@ -177,7 +177,7 @@ public class PickingPointsSystemTest {
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		Package p = new Package("0000000000");
-		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		pps.getPackageLocker("0000000000").setPaquete(p);
 		pps.eliminarPackageLocker("0000000000");
 	}
 
@@ -444,7 +444,7 @@ public class PickingPointsSystemTest {
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		Package p = new Package("0000000000");
-		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		pps.getPackageLocker("0000000000").setPaquete(p);
 		assertEquals(pps.getPackageLockerTaquillasVacias().length, 0);
 	}
 
@@ -485,7 +485,7 @@ public class PickingPointsSystemTest {
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1);
 		Package p = new Package("0000000000");
-		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		pps.getPackageLocker("0000000000").setPaquete(p);
 		assertEquals(pps.getPackageLockerTaquillasVaciasOperativas().length, 0);
 	}
 
@@ -513,7 +513,7 @@ public class PickingPointsSystemTest {
 		PickingPointsSystem pps = new PickingPointsSystem();
 		pps.crearPackageLocker("0000000000", gps, horario, 1, false);
 		Package p = new Package("0000000000");
-		pps.getPackageLocker("0000000000").asignaPaquete(p);
+		pps.getPackageLocker("0000000000").setPaquete(p);
 
 		assertEquals(pps.getPackageLockerTaquillasVaciasOperativas().length, 0);
 	}

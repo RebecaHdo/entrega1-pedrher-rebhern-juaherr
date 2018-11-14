@@ -3,9 +3,8 @@ package amazingCo.paquete;
 import java.time.LocalDate;
 
 /**
- * Permite crear paquetes, controlar y conocer el estado del paquete,
- * ya sea si este ha sido devuelto o recogido y saber su fecha límite de
- * recogida.
+ * Permite crear paquetes, controlar y conocer su estado, conocer su id y saber
+ * su fecha límite de recogida y si esta ha sido superada frente a otra.
  * 
  * @author juaherr
  * @author rebhern
@@ -15,13 +14,40 @@ import java.time.LocalDate;
  */
 public class Package {
 
-	private static final int DIAS_MAXIMO = 7;
+	private static int diasMaximos = 7;
 	private String id;
 	private LocalDate fechaLimite;
 	/*
 	 * Estados: 0 para recoger. 1 recogido. 2 devuelto.
 	 */
 	private int estado;
+
+	/**
+	 * Devuelve el número de dias que puede estar un paquete en una taquilla como
+	 * máximo.
+	 *
+	 * @return número de dias que puede estar un paquete en una taquilla como
+	 *         máximo.
+	 */
+	public static int getDiasMaximos() {
+		return diasMaximos;
+	}
+
+	/**
+	 * Cambia el número de dias que puede estar un paquete en una taquilla como
+	 * máximo al número de días dado.
+	 * 
+	 * @param dias número de dias que puede estar un paquete en una taquilla como
+	 *             máximo.
+	 * 
+	 * @throws IllegalArgumentException si el número de días es negativo.
+	 */
+	public static void setDiasMaximos(int dias) {
+		if (dias < 0) {
+			throw new IllegalArgumentException("Número máximo de días negativo.");
+		}
+		diasMaximos = dias;
+	}
 
 	/**
 	 * Devuelve la fecha límite del paquete.
@@ -35,7 +61,9 @@ public class Package {
 	/**
 	 * Devuelve estado del paquete.
 	 * 
-	 * @return estado del paquete.
+	 * 0 = para recoger. 1 = recogido. 2 = devuelto.
+	 * 
+	 * @return estado del paquete. 0 = para recoger. 1 = recogido. 2 = devuelto.
 	 */
 	public int getEstado() {
 		return estado;
@@ -57,13 +85,19 @@ public class Package {
 	/**
 	 * Inicializa el paquete con la id y fecha límite a partir de la fecha actual.
 	 * 
+	 * La id del paquete sigue la siguiente restricción: "Debe tener diez
+	 * caracteres, de los cuales los primeros nueve son dígitos y el décimo es un
+	 * dígito resultante del resto de la división entre 10 de la suma de los 9
+	 * primeros."
+	 * 
 	 * @param id id del paquete siguiendo las restriciones de id: "Debe tener diez
 	 *           caracteres, de los cuales los primeros nueve son dígitos y el
 	 *           décimo es un dígito resultante del resto de la división entre 10 de
 	 *           la suma de los 9 primeros."
 	 * @throws IllegalArgumentException si la id es null.
-	 * @throws IllegalArgumentException si la longitud de la id es distinta de 10 o
-	 *                                  si los caracteres de la id son distintos de
+	 * @throws IllegalArgumentException si la longitud de la id es distinta de 10.
+	 * 
+	 * @throws IllegalArgumentException si los caracteres de la id son distintos de
 	 *                                  [0,9].
 	 * @throws IllegalArgumentException si no se verifica el dígito de condición.
 	 */
@@ -90,17 +124,17 @@ public class Package {
 		if (acumulado % 10 == (id.charAt(9) - '0')) {
 			this.id = id;
 			fechaLimite = LocalDate.now();
-			fechaLimite = fechaLimite.plusDays(DIAS_MAXIMO);
+			fechaLimite = fechaLimite.plusDays(diasMaximos);
 		} else {
 			throw new IllegalArgumentException("No se verifica el dígito de condición.");
 		}
 	}
 
 	/**
-	 * Dada una fecha indica si la fecha de fin de almacenaje ha caducado.
+	 * Indica si todavia se puede recoger el paquete respecto a la fecha dada.
 	 * 
 	 * @param fecha fecha con la que se desea comprobar.
-	 * @return true si se ha pasado el plazo y false si no.
+	 * @return true si se puedde recoger y false si no.
 	 * @throws IllegalArgumentException si la fecha es null.
 	 */
 	public boolean fechaEnPlazo(LocalDate fecha) {

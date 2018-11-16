@@ -31,8 +31,8 @@ public class PickingPointsSystem {
 
 	/**
 	 * 
-	 * Crear y guarda el PackageLocker con la id, ubicación, horario semanal, número de
-	 * taquillas y operatividad dados.
+	 * Crear y guarda el PackageLocker con la id, ubicación, horario semanal, número
+	 * de taquillas y operatividad dados.
 	 * 
 	 * @param id              id de la taquilla.
 	 * @param ubicacion       ubicación de la taquilla.
@@ -64,8 +64,8 @@ public class PickingPointsSystem {
 
 	/**
 	 * 
-	 * Crear y guarda el PackageLocker operativo con la id, ubicación, horario semanal
-	 * y número de taquillas.
+	 * Crear y guarda el PackageLocker operativo con la id, ubicación, horario
+	 * semanal y número de taquillas.
 	 * 
 	 * @param id              id de la taquilla.
 	 * @param ubicacion       ubicación de la taquilla.
@@ -79,45 +79,7 @@ public class PickingPointsSystem {
 	 *                                  introducida.
 	 */
 	public void crearPackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
-		crearPackageLocker(id,ubicacion,horario,numeroTaquillas,true);
-	}
-
-	/**
-	 * Elimina un PackageLocker por id introducida.
-	 * 
-	 * @param id del PackageLocker a borrar.
-	 * @throws IllegalStateException    si no hay ningún PackageLocker creado.
-	 * @throws IllegalStateException    si hay paquetes sin recoger o devolver en el
-	 *                                  PackageLocker.
-	 * @throws IllegalArgumentException si no existe ningún PackageLocker con la id
-	 *                                  introducida.
-	 */
-	public void eliminarPackageLocker(String id) {
-		if (getListaPackageLockers().size() == 0) {
-			throw new IllegalStateException("No hay PackageLockers creado.");
-		}
-		int i = 0;
-		boolean encontrado = false;
-		while (i < getListaPackageLockers().size()) {
-			PackageLocker PackageLocker = getListaPackageLockers().get(i);
-			if (id == PackageLocker.getId()) {
-				for (int j = 0; j < PackageLocker.getNumeroTaquillas(); j++) {
-					if (PackageLocker.getTaquillas()[j] != null) {
-						throw new IllegalStateException("Todavia hay paquetes en el PackageLocker.");
-					}
-				}
-				getListaPackageLockers().remove(i);
-				i = getListaPackageLockers().size();
-				encontrado = true;
-			} else {
-				i++;
-
-			}
-		}
-		if (!encontrado) {
-			throw new IllegalArgumentException("No existe ningún PackageLocker con esa id.");
-
-		}
+		crearPackageLocker(id, ubicacion, horario, numeroTaquillas, true);
 	}
 
 	/**
@@ -231,8 +193,8 @@ public class PickingPointsSystem {
 	 * 
 	 * @param ubicacion zona desde la que se genera el radio.
 	 * @param radio     distancia desde la ubicación que se quiere abarcar.
-	 * @return todos los PackageLockers operativos que están en el radio indicado desde
-	 *         la ubicación indicada.
+	 * @return todos los PackageLockers operativos que están en el radio indicado
+	 *         desde la ubicación indicada.
 	 * @throws IllegalArgumentException si la ubicaón introducida es nula.
 	 * @throws IllegalArgumentException si el radioi dado es negativo.
 	 * @throws IllegalStateException    si no hay PackageLockers creados.
@@ -329,4 +291,40 @@ public class PickingPointsSystem {
 		return vector;
 	}
 
+	/**
+	 * Elimina un PackageLocker por id introducida.
+	 * 
+	 * @param id del PackageLocker a borrar.
+	 * @throws IllegalStateException    si no hay ningún PackageLocker creado.
+	 * @throws IllegalStateException    si hay paquetes sin recoger o devolver en el
+	 *                                  PackageLocker.
+	 * @throws IllegalArgumentException si no existe ningún PackageLocker con la id
+	 *                                  introducida.
+	 */
+	public void eliminarPackageLocker(String id) {
+		if (getListaPackageLockers().size() == 0) {
+			throw new IllegalStateException("No hay PackageLockers creado.");
+		}
+		int i = 0;
+		boolean encontrado = false;
+		while (i < getListaPackageLockers().size()) {
+			PackageLocker PackageLocker = getListaPackageLockers().get(i);
+			if (id == PackageLocker.getId()) {
+				for (int j = 0; j < PackageLocker.getNumeroTaquillas(); j++) {
+					if (PackageLocker.getTaquillas()[j] != null) {
+						throw new IllegalStateException("Todavia hay paquetes en el PackageLocker.");
+					}
+				}
+				getListaPackageLockers().remove(i);
+				i = getListaPackageLockers().size();
+				encontrado = true;
+			} else {
+				i++;
+			}
+		}
+		if (!encontrado) {
+			throw new IllegalArgumentException("No existe ningún PackageLocker con esa id.");
+
+		}
+	}
 }

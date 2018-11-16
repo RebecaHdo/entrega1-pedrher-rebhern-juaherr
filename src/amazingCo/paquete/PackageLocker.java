@@ -113,6 +113,16 @@ public class PackageLocker {
 
 	}
 
+	/**
+	 * Devuelve true si el PackageLocker está operativo y false en caso contrario.
+	 * 
+	 * @return true si el PackageLocker está operativo y false si no lo está.
+	 */
+	public boolean getOperativo() {
+		return operativo;
+
+	}
+	
 	private void setOperativo(boolean op) {
 		operativo = op;
 	}
@@ -124,14 +134,14 @@ public class PackageLocker {
 	/**
 	 * Devuelve una copia de las taquillas del PackageLocker.
 	 * 
-	 * @return taquillas del PackageLocker.
+	 * @return copia de taquillas del PackageLocker.
 	 */
 	public Package[] getTaquillas() {
 		Package[] devolver = new Package[getNumeroTaquillas()];
-		System.arraycopy(taquillas, 0, devolver, 0, getNumeroTaquillas());
+		System.arraycopy(getTaquillasInterno(), 0, devolver, 0, getNumeroTaquillas());
 		return devolver;
 	}
-	
+
 	private Package[] getTaquillasInterno() {
 		return taquillas;
 	}
@@ -146,24 +156,17 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Devuleve la hora de apertura o cierre de la taquilla de un día especificado.
+	 * Devuleve la una copia del horario.
 	 * 
-	 * @param dia día de la semana del que se quiere saber el horario.
-	 * @return horario horas de apertura y cierre del día indicado.
+	 * @return copia del horario.
 	 */
-	public LocalTime[][] getHorarioDia() {
-		return horario;
+	public LocalTime[][] getHorario() {
+		LocalTime[][] devolver = new LocalTime[7][2];
+		System.arraycopy(horario, 0, devolver, 0, 7);
+		return devolver;
 	}
 
-	/**
-	 * Devuelve true si el PackageLocker está operativo y false en caso contrario.
-	 * 
-	 * @return true si el PackageLocker está operativo y false si no lo está.
-	 */
-	public boolean getOperativo() {
-		return operativo;
 
-	}
 
 	/**
 	 * Devuelve el número de taquillas que tiene el PackageLocker.
@@ -193,12 +196,13 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Devuelve la ubicación geográfica del PackageLocker.
+	 * Devuelve la copia de la ubicación geográfica del PackageLocker.
 	 * 
-	 * @return ubicación geográfica.
+	 * @return copia de la ubicación geográfica.
 	 */
 	public GPSCoordinate getUbicacion() {
-		return ubicacion;
+		GPSCoordinate devolver = new GPSCoordinate(ubicacion.getLatitudeGD(), ubicacion.getLongitudeGD());
+		return devolver;
 	}
 
 	/**
@@ -251,7 +255,7 @@ public class PackageLocker {
 	 * @throws IllegalStateException    Si el PackageLocker está lleno.
 	 * @throws IllegalStateException    Si hay otro paquete con la misma id.
 	 */
-	public void setPaquete(Package paquete) {
+	public void asignaPaquete(Package paquete) {
 
 		if (paquete == null) {
 			throw new IllegalArgumentException("El paquete es null.");
@@ -282,10 +286,9 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Saca el paquete de la taquilla dada.
+	 * Muestra el paquete de la taquilla dada.
 	 * 
-	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
-	 * @param fechaSacada fecha en la que se saca el paquete.
+	 * @param idTaquilla id de la taquilla de la que sacar el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia.
 	 * @return paquete que estaba en la taquilla indicada.
@@ -308,8 +311,7 @@ public class PackageLocker {
 	/**
 	 * Borra el paquete de la taquilla dada.
 	 * 
-	 * @param idTaquilla  id de la taquilla de la que sacar el paquete.
-	 * @param fechaSacada fecha en la que se saca el paquete.
+	 * @param idTaquilla id de la taquilla de la que sacar el paquete.
 	 * @throws IllegalArgumentException si el número de taquilla es erróneo.
 	 * @throws IllegalStateException    si la taquilla está vacia.
 	 */

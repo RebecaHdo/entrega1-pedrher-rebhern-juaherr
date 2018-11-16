@@ -5,6 +5,8 @@ import java.time.LocalDate;
 /**
  * Permite crear paquetes, controlar y conocer su estado, conocer su id y saber
  * su fecha límite de recogida y si esta ha sido superada frente a otra.
+ * <br><br>
+ * El tiempo por defecto de margen es 7 días.
  * 
  * @author juaherr
  * @author rebhern
@@ -16,7 +18,7 @@ public class Package {
 
 	private static int diasMaximos = 7;
 	private String id;
-	private LocalDate fechaLimite;
+	private LocalDate fechaCreacion;
 	/*
 	 * Estados: 0 para recoger. 1 recogido. 2 devuelto.
 	 */
@@ -36,6 +38,8 @@ public class Package {
 	/**
 	 * Cambia el número de dias que puede estar un paquete en una taquilla como
 	 * máximo al número de días dado.
+	 * 
+	 * El tiempo por defecto de margen de días es 7.
 	 * 
 	 * @param dias número de dias que puede estar un paquete en una taquilla como
 	 *             máximo.
@@ -90,8 +94,7 @@ public class Package {
 		}
 		if (acumulado % 10 == (id.charAt(9) - '0')) {
 			this.id = id;
-			fechaLimite = LocalDate.now();
-			fechaLimite = fechaLimite.plusDays(diasMaximos);
+			fechaCreacion = LocalDate.now();
 		} else {
 			throw new IllegalArgumentException("No se verifica el dígito de condición.");
 		}
@@ -103,7 +106,7 @@ public class Package {
 	 * @return fecha límite del paquete.
 	 */
 	public LocalDate getFecha() {
-		return fechaLimite;
+		return fechaCreacion.plusDays(diasMaximos);
 	}
 
 	/**
@@ -132,9 +135,11 @@ public class Package {
 
 	/**
 	 * Indica si todavia se puede recoger el paquete respecto a la fecha dada.
+	 * <br><br>
+	 * Se admite que se pueda recoger el mismo día que vence la fecha límite.
 	 * 
 	 * @param fecha fecha con la que se desea comprobar.
-	 * @return true si se puedde recoger y false si no.
+	 * @return true si se puede recoger y false si no.
 	 * @throws IllegalArgumentException si la fecha es null.
 	 */
 	public boolean fechaEnPlazo(LocalDate fecha) {
@@ -142,7 +147,7 @@ public class Package {
 			throw new IllegalArgumentException("La fecha es null.");
 
 		}
-		return !fechaLimite.isBefore(fecha);
+		return !getFecha().isBefore(fecha);
 	}
 
 	/**

@@ -314,8 +314,8 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no válida del generador del PackageLocker operativo donde se analiza el
-	 * horario como un conjunto, por tanto se prueba en los extremos los erroes.
+	 * Pruebas no válida del generador del PackageLocker operativo donde se analiza
+	 * el horario como un conjunto, por tanto se prueba en los extremos los erroes.
 	 */
 	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
@@ -474,8 +474,8 @@ public class PackageLockerTest {
 	}
 
 	/*
-	 * Pruebas no váidas del generador de PackageLocker operativo respecto al número de
-	 * Taquillas.
+	 * Pruebas no váidas del generador de PackageLocker operativo respecto al número
+	 * de Taquillas.
 	 */
 	@SuppressWarnings("unused")
 	@Test(expected = IllegalArgumentException.class)
@@ -500,6 +500,26 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 0, true);
 
 	}
+
+	/*
+	 * Pruebas del queTaquillas()
+	 */
+	@Test
+	public void testgetTaquillas() {
+		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(9, 30), LocalTime.of(21, 10) },
+				{ LocalTime.of(7, 15), LocalTime.of(20, 20) }, { LocalTime.of(6, 30), LocalTime.of(21, 0) },
+				{ LocalTime.of(5, 45), LocalTime.of(15, 50) }, { LocalTime.of(2, 15), LocalTime.of(23, 00) } };
+		GPSCoordinate gps = new GPSCoordinate(41.6551455, -4.7381979);
+		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1, true);
+		Package p = new Package("0000000000");
+		t.setPaquete(p);
+		Package[] arrayPaquetes = t.getTaquillas();
+		arrayPaquetes[0]= null;
+		assertEquals(t.getTaquillas()[0].getId(),"0000000000");
+		assertEquals(t.getPaquete(0).getId(),"0000000000");
+	}
+	
 
 	/*
 	 * Pruebas del método getOperatividad().
@@ -829,6 +849,7 @@ public class PackageLockerTest {
 		t.getPaquete(0);
 
 	}
+
 	/*
 	 * Pruebas del mátodo borraPaquete()
 	 */
@@ -843,9 +864,10 @@ public class PackageLockerTest {
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
 		t.borraPaquete(0);
-		assertEquals(t.getNumeroTaquillasLlenas(),0);
+		assertEquals(t.getNumeroTaquillasLlenas(), 0);
+		assertNull(t.getTaquillas()[0]);
 	}
-//TODO preguntar si un caso valido puede dar un fallo para comprobar que va bien.
+
 	@Test
 	public void testborraPaqueteVarios() {
 		LocalTime[][] horario = { { LocalTime.of(8, 0), LocalTime.of(14, 0) },
@@ -860,9 +882,8 @@ public class PackageLockerTest {
 		t.setPaquete(p2);
 		t.borraPaquete(0);
 		assertEquals(t.getPaquete(1).getId(), "0000000011");
-		assertEquals(t.getNumeroTaquillasLlenas(),1);
-
-
+		assertEquals(t.getNumeroTaquillasLlenas(), 1);
+		assertNull(t.getTaquillas()[0]);
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -904,6 +925,7 @@ public class PackageLockerTest {
 		t.borraPaquete(0);
 
 	}
+
 	/*
 	 * Pruebas del método sacaPaquete().
 	 */
@@ -1017,7 +1039,7 @@ public class PackageLockerTest {
 		Package p = new Package("0000000000");
 		PackageLocker t = new PackageLocker("0000000000", gps, horario, 1);
 		t.setPaquete(p);
-		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos()+1));
+		t.sacaPaquete(0, LocalDate.now().plusDays(Package.getDiasMaximos() + 1));
 
 	}
 

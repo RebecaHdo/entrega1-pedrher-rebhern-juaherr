@@ -50,39 +50,6 @@ public class Package {
 	}
 
 	/**
-	 * Devuelve la fecha límite del paquete.
-	 * 
-	 * @return fecha límite del paquete.
-	 */
-	public LocalDate getFecha() {
-		return fechaLimite;
-	}
-
-	/**
-	 * Devuelve estado del paquete.
-	 * 
-	 * 0 = para recoger. 1 = recogido. 2 = devuelto.
-	 * 
-	 * @return estado del paquete. 0 = para recoger. 1 = recogido. 2 = devuelto.
-	 */
-	public int getEstado() {
-		return estado;
-	}
-
-	private void setEstado(int nuevoEstado) {
-		estado = nuevoEstado;
-	}
-
-	/**
-	 * Devuelve la id del paquete.
-	 * 
-	 * @return id del paquete.
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
 	 * Inicializa el paquete con la id y fecha límite a partir de la fecha actual.
 	 * 
 	 * La id del paquete sigue la siguiente restricción: "Debe tener diez
@@ -128,6 +95,39 @@ public class Package {
 		} else {
 			throw new IllegalArgumentException("No se verifica el dígito de condición.");
 		}
+	}
+
+	/**
+	 * Devuelve la fecha límite del paquete.
+	 * 
+	 * @return fecha límite del paquete.
+	 */
+	public LocalDate getFecha() {
+		return fechaLimite;
+	}
+
+	/**
+	 * Devuelve estado del paquete.
+	 * 
+	 * 0 = para recoger. 1 = recogido. 2 = devuelto.
+	 * 
+	 * @return estado del paquete. 0 = para recoger. 1 = recogido. 2 = devuelto.
+	 */
+	public int getEstado() {
+		return estado;
+	}
+
+	private void setEstado(int nuevoEstado) {
+		estado = nuevoEstado;
+	}
+
+	/**
+	 * Devuelve la id del paquete.
+	 * 
+	 * @return id del paquete.
+	 */
+	public String getId() {
+		return id;
 	}
 
 	/**

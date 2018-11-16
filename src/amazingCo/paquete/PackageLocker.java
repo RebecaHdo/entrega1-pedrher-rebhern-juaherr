@@ -5,9 +5,9 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 
 /**
- * Permite la creación de PackageLockers con su id, horario, ubicación, número de
- * taquillas y operatividad y controlar los paquetes que tiene dicho PackageLocker.
- * Los números de las taquillas comienzan en 0.
+ * Permite la creación de PackageLockers con su id, horario, ubicación, número
+ * de taquillas y operatividad y controlar los paquetes que tiene dicho
+ * PackageLocker. Los números de las taquillas comienzan en 0.
  * 
  * @author juaherr
  * @author rebhern
@@ -77,7 +77,8 @@ public class PackageLocker {
 		this(id, ubicacion, horario, numeroTaquillas, true);
 	}
 
-	// Comprueba que los argumentos dados para la inicialización del PackageLocker sean
+	// Comprueba que los argumentos dados para la inicialización del PackageLocker
+	// sean
 	// válidos.
 	private void compruebaGenerador(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
 		if (id == null || ubicacion == null || horario == null) {
@@ -121,11 +122,17 @@ public class PackageLocker {
 	}
 
 	/**
-	 * Devuelve las taquillas del PackageLocker.
+	 * Devuelve una copia de las taquillas del PackageLocker.
 	 * 
-	 * @return  taquillas dle PackageLocker.
+	 * @return taquillas del PackageLocker.
 	 */
 	public Package[] getTaquillas() {
+		Package[] devolver = new Package[getNumeroTaquillas()];
+		System.arraycopy(taquillas, 0, devolver, 0, getNumeroTaquillas());
+		return devolver;
+	}
+	
+	private Package[] getTaquillasInterno() {
 		return taquillas;
 	}
 
@@ -221,7 +228,7 @@ public class PackageLocker {
 		int i = 0;
 		int zona = -1;
 		while (i < getNumeroTaquillas()) {
-			if (idPaquete == getTaquillas()[i].getId()) {
+			if (idPaquete == getTaquillasInterno()[i].getId()) {
 				zona = i;
 				i = getNumeroTaquillas();
 			} else {
@@ -254,8 +261,8 @@ public class PackageLocker {
 		}
 		// comprueba que no haya un paquete con la misma id en el PackageLocker.
 		for (int i = 0; i < getNumeroTaquillas(); i++) {
-			if (getTaquillas()[i] != null) {
-				if (paquete.getId() == getTaquillas()[i].getId()) {
+			if (getTaquillasInterno()[i] != null) {
+				if (paquete.getId() == getTaquillasInterno()[i].getId()) {
 					throw new IllegalStateException("Hay otro paquete con la misma id");
 				}
 			}
@@ -263,8 +270,8 @@ public class PackageLocker {
 		// guarda el paquete en la primera taquilla libre.
 		int i = 0;
 		while (i < getNumeroTaquillas()) {
-			if (getTaquillas()[i] == null) {
-				getTaquillas()[i] = paquete;
+			if (getTaquillasInterno()[i] == null) {
+				getTaquillasInterno()[i] = paquete;
 				i = getNumeroTaquillas();
 			} else {
 				i++;
@@ -290,11 +297,11 @@ public class PackageLocker {
 					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
 		}
 
-		if (getTaquillas()[idTaquilla] == null) {
+		if (getTaquillasInterno()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}
 
-		Package paquete = getTaquillas()[idTaquilla];
+		Package paquete = getTaquillasInterno()[idTaquilla];
 		return paquete;
 	}
 
@@ -313,10 +320,10 @@ public class PackageLocker {
 					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
 		}
 
-		if (getTaquillas()[idTaquilla] == null) {
+		if (getTaquillasInterno()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}
-		getTaquillas()[idTaquilla] = null;
+		getTaquillasInterno()[idTaquilla] = null;
 		setOcupadas(getNumeroTaquillasLlenas() - 1);
 
 	}
@@ -343,14 +350,14 @@ public class PackageLocker {
 			throw new IllegalArgumentException("La fecha es nula.");
 
 		}
-		if (getTaquillas()[idTaquilla] == null) {
+		if (getTaquillasInterno()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 
-		} else if (!getTaquillas()[idTaquilla].fechaEnPlazo(fechaSacada)) {
+		} else if (!getTaquillasInterno()[idTaquilla].fechaEnPlazo(fechaSacada)) {
 			throw new IllegalStateException("La fecha de entrega ha sido superada.");
 
 		}
-		getTaquillas()[idTaquilla].recogido();
+		getTaquillasInterno()[idTaquilla].recogido();
 	}
 
 	/**
@@ -365,9 +372,9 @@ public class PackageLocker {
 			throw new IllegalArgumentException(
 					"Número de taquilla erroneo. Debe estar comprendido entre 0 y numero de taquillas -1");
 		}
-		if (getTaquillas()[idTaquilla] == null) {
+		if (getTaquillasInterno()[idTaquilla] == null) {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}
-		getTaquillas()[idTaquilla].devuelto();
+		getTaquillasInterno()[idTaquilla].devuelto();
 	}
 }

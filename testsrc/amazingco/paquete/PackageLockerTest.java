@@ -1,4 +1,4 @@
-package amazingCo.paquete;
+package amazingco.paquete;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,9 @@ import java.time.LocalTime;
 import java.time.LocalDate;
 
 import org.junit.Test;
+
+import amazingco.paquete.Package;
+import amazingco.paquete.PackageLocker;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
 /*

@@ -1,4 +1,4 @@
-package amazingCo.paquete;
+package amazingco.paquete;
 
 import static org.junit.Assert.*;
 
@@ -6,6 +6,8 @@ import java.time.LocalTime;
 
 import org.junit.Test;
 
+import amazingco.paquete.Package;
+import amazingco.paquete.PickingPointsSystem;
 import es.uva.inf.poo.maps.GPSCoordinate;
 
 public class PickingPointsSystemTest {

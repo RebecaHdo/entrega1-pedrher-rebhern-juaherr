@@ -1,4 +1,4 @@
-package amazingCo.paquete;
+package amazingco.paquete;
 
 import es.uva.inf.poo.maps.GPSCoordinate;
 import java.time.LocalTime;
@@ -46,41 +46,8 @@ public class PackageLocker {
 	 */
 	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas,
 			boolean operativo) {
-		compruebaGenerador(id, ubicacion, horario, numeroTaquillas);
-		this.id = id;
-		this.ubicacion = ubicacion;
-		this.horario = horario;
-		this.numeroTaquillas = numeroTaquillas;
-		this.operativo = operativo;
-		this.taquillas = new Package[numeroTaquillas];
-	}
 
-	/**
-	 * Inicializa el PackageLocker operativo con la id, ubicación, horario semanal y
-	 * número de taquillas.
-	 * 
-	 * @param id              id de la taquilla.
-	 * @param ubicacion       ubicación de la taquilla.
-	 * @param horario         forma en la que se representa el día de la semana y la
-	 *                        hora de apertura y cierre de cada día. Esquema:
-	 *                        [[LocalTime(apertura),Localtime(cierre)],...,[LocalTime,Localtime]]
-	 * @param numeroTaquillas número de taquillas que tiene el PackageLocker.
-	 * @throws IllegalArgumentException si alguno de los argumentos es null.
-	 * @throws IllegalArgumentException si el horario no contiene los 7 dias de la
-	 *                                  semana, que uno de los dias sea null, que un
-	 *                                  dia no tenga exactamente 2 horas o que la
-	 *                                  hora de apertura sea mayor que la hora de
-	 *                                  cierre.
-	 * @throws IllegalArgumentException si el numeroTaquillas es negativo.
-	 */
-	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
-		this(id, ubicacion, horario, numeroTaquillas, true);
-	}
-
-	// Comprueba que los argumentos dados para la inicialización del PackageLocker
-	// sean
-	// válidos.
-	private void compruebaGenerador(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
+		// Comprueba que los argumentos dados para la inicialización del PackageLocker sean válidos.
 		if (id == null || ubicacion == null || horario == null) {
 			throw new IllegalArgumentException("Uno de los argumentos es null.");
 		}
@@ -111,7 +78,37 @@ public class PackageLocker {
 
 		}
 
+		this.id = id;
+		this.ubicacion = ubicacion;
+		this.horario = horario;
+		this.numeroTaquillas = numeroTaquillas;
+		this.operativo = operativo;
+		this.taquillas = new Package[numeroTaquillas];
 	}
+
+	/**
+	 * Inicializa el PackageLocker operativo con la id, ubicación, horario semanal y
+	 * número de taquillas.
+	 * 
+	 * @param id              id de la taquilla.
+	 * @param ubicacion       ubicación de la taquilla.
+	 * @param horario         forma en la que se representa el día de la semana y la
+	 *                        hora de apertura y cierre de cada día. Esquema:
+	 *                        [[LocalTime(apertura),Localtime(cierre)],...,[LocalTime,Localtime]]
+	 * @param numeroTaquillas número de taquillas que tiene el PackageLocker.
+	 * @throws IllegalArgumentException si alguno de los argumentos es null.
+	 * @throws IllegalArgumentException si el horario no contiene los 7 dias de la
+	 *                                  semana, que uno de los dias sea null, que un
+	 *                                  dia no tenga exactamente 2 horas o que la
+	 *                                  hora de apertura sea mayor que la hora de
+	 *                                  cierre.
+	 * @throws IllegalArgumentException si el numeroTaquillas es negativo.
+	 */
+	public PackageLocker(String id, GPSCoordinate ubicacion, LocalTime[][] horario, int numeroTaquillas) {
+		this(id, ubicacion, horario, numeroTaquillas, true);
+	}
+
+
 
 	/**
 	 * Devuelve true si el PackageLocker está operativo y false en caso contrario.
@@ -122,7 +119,7 @@ public class PackageLocker {
 		return operativo;
 
 	}
-	
+
 	private void setOperativo(boolean op) {
 		operativo = op;
 	}
@@ -166,8 +163,6 @@ public class PackageLocker {
 		return devolver;
 	}
 
-
-
 	/**
 	 * Devuelve el número de taquillas que tiene el PackageLocker.
 	 * 
@@ -201,19 +196,14 @@ public class PackageLocker {
 	 * @return copia de la ubicación geográfica.
 	 */
 	public GPSCoordinate getUbicacion() {
-		GPSCoordinate devolver = new GPSCoordinate(ubicacion.getLatitudeGD(), ubicacion.getLongitudeGD());
-		return devolver;
+		return new GPSCoordinate(ubicacion.getLatitudeGD(), ubicacion.getLongitudeGD());
 	}
 
 	/**
 	 * Cambia el packageLocker a operativo si está fuera de servicio y viceversa.
 	 */
 	public void operatividad() {
-		if (getOperativo()) {
-			setOperativo(false);
-		} else {
-			setOperativo(true);
-		}
+		setOperativo(!getOperativo());
 	}
 
 	/**
@@ -265,10 +255,8 @@ public class PackageLocker {
 		}
 		// comprueba que no haya un paquete con la misma id en el PackageLocker.
 		for (int i = 0; i < getNumeroTaquillas(); i++) {
-			if (getTaquillasInterno()[i] != null) {
-				if (paquete.getId() == getTaquillasInterno()[i].getId()) {
-					throw new IllegalStateException("Hay otro paquete con la misma id");
-				}
+			if ((getTaquillasInterno()[i] != null) && (paquete.getId() == getTaquillasInterno()[i].getId())) {
+				throw new IllegalStateException("Hay otro paquete con la misma id");
 			}
 		}
 		// guarda el paquete en la primera taquilla libre.
@@ -304,8 +292,7 @@ public class PackageLocker {
 			throw new IllegalStateException("Esta taquilla está vacía.");
 		}
 
-		Package paquete = getTaquillasInterno()[idTaquilla];
-		return paquete;
+		return getTaquillasInterno()[idTaquilla];
 	}
 
 	/**

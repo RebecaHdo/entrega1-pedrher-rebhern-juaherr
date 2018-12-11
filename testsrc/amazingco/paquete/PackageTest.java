@@ -1,8 +1,11 @@
-package amazingCo.paquete;
+package amazingco.paquete;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+
+import amazingco.paquete.Package;
+
 import java.time.LocalDate;
 
 public class PackageTest {
